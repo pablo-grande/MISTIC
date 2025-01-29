@@ -1,0 +1,80 @@
+version: "3.3"
+
+services:
+  proxy:
+    image: nginxproxy/nginx-proxy
+    container_name: proxy
+    volumes:
+      - "certs:/etc/nginx/certs"
+      - "vhost:/etc/nginx/vhost.d"
+      - "html:/usr/share/nginx/html"
+      - "/var/run/docker.sock:/tmp/docker.sock:ro"
+    networks: ["nginx_server"]
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+
+  #FIXME: letsencrypt will only work with proper domain names
+  #  letsencrypt:
+  #    image: nginxproxy/acme-companion
+  #    container_name: letsencrypt
+  #    volumes:
+  #      - "certs:/etc/nginx/certs"
+  #      - "vhost:/etc/nginx/vhost.d"
+  #      - "html:/usr/share/nginx/html"
+  #      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+  #    environment:
+  #      NGINX_PROXY_CONTAINER: proxy
+  #    networks: ["nginx_server"]
+  #    restart: always
+  #    depends_on: ["proxy"]
+
+  # FIXME: Not supported with ARM. Build regular python image and install
+  synapse:
+    image: matrixdotorg/synapse:latest
+    container_name: synapse
+    volumes:
+        - ./data:/data
+    environment:
+      VIRTUAL_HOST: "localhost"
+      VIRTUAL_PORT: 8008
+      LETSENCRYPT_HOST: "localhost"
+      SYNAPSE_SERVER_NAME: "localhost"
+      SYNAPSE_REPORT_STATS: "yes"
+    networks: ["nginx_server"]
+
+  tor:
+    image: goldy/tor-hidden-service:0.3.5.8
+    links:
+      - web
+    environment:
+      # hello and again will share the same onion v3 address
+      SERVICE2_TOR_SERVICE_HOSTS: 80:web:5000
+      SERVICE2_TOR_SERVICE_VERSION: '3'
+      # tor v3 address private key base 64 encoded
+      SERVICE2_TOR_SERVICE_KEY: |
+        PT0gZWQyNTUxOXYxLXNlY3JldDogdHlwZTAgPT0AAACArobDQYyZAWXei4QZwr++
+        j96H1X/gq14NwLRZ2O5DXuL0EzYKkdhZSILY85q+kfwZH8z4ceqe7u1F+0pQi/sM
+
+  web:
+    build: hidden-service
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./hidden-service:/code
+    environment:
+      FLASK_ENV: development
+
+  redis:
+    image: "redis:alpine"
+
+networks:
+  nginx_server:
+    external: true
+
+volumes:
+  certs:
+  vhost:
+  html:
+
