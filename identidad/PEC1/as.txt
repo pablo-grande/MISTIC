@@ -1,0 +1,18 @@
+Warning: truncating password to 8 characters
+Warning: truncating password to 8 characters
+Warning: truncating password to 8 characters
+Warning: truncating password to 8 characters
+Warning: truncating password to 8 characters
+Warning: truncating password to 8 characters
+Warning: truncating password to 8 characters
+Warning: truncating password to 8 characters
+Warning: truncating password to 8 characters
+Warning: truncating password to 8 characters
+Warning: truncating password to 8 characters
+Warning: truncating password to 8 characters
+Warning: truncating password to 8 characters
+Warning: truncating password to 8 characters
+
+real	0m12,715s
+user	0m9,861s
+sys	0m3,093s

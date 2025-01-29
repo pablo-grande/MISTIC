@@ -1,0 +1,16 @@
+#!/bin/bash
+
+if [  $# -le 1 ]
+then 
+	echo "Usage: " $0 SALT PASSWORD_CODED DICTIONARY_FILE
+	exit
+fi
+while read word;
+do
+	variable=$(openssl passwd -crypt -salt "$1" "$word")
+	if [ "$variable" = $2 ]
+	then
+		echo password found: $word
+		exit
+	fi
+done < 8dict

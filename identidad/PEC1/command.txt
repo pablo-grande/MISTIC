@@ -1,0 +1,1 @@
+{ time ./script8 tl tlTX4.dlNA10k ; } 2> tl.txt

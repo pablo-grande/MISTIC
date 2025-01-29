@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  - Sample namespace-based configuration
+  -
+  -->
+<beans xmlns:security="http://www.springframework.org/schema/security"
+    xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+
+
+   <!--
+		Enable security, let the casAuthenticationEntryPoint handle all intercepted urls.
+		The CAS_FILTER needs to be in the right position within the filter chain.
+	-->
+	<security:http entry-point-ref="casAuthenticationEntryPoint" auto-config="true">
+
+		<security:intercept-url pattern="/secure/menu.jsp" access="ROLE_GNT,ROLE_A,ROLE_AC,ROLE_GCFP,ROLE_GCP"></security:intercept-url>
+
+		<security:intercept-url pattern="/secure/nominas/gestion_nominas.jsp" access="ROLE_GNT"></security:intercept-url>
+		<security:intercept-url pattern="/secure/nominas/gestion_trabajadores.jsp" access="ROLE_GNT,ROLE_A"></security:intercept-url>
+
+		<security:intercept-url pattern="/secure/compras/autorizar_compras.jsp" access="ROLE_AC"></security:intercept-url>
+		<security:intercept-url pattern="/secure/compras/gestion_compras.jsp" access="ROLE_GCP"></security:intercept-url>
+		<security:intercept-url pattern="/secure/compras/gestion_proveedores.jsp" access="ROLE_GCP,ROLE_A"></security:intercept-url>
+
+		<security:intercept-url pattern="/secure/ventas/gestion_presupuestos.jsp" access="ROLE_A,ROLE_GCFP"></security:intercept-url>
+		<security:intercept-url pattern="/secure/ventas/gestion_clientes.jsp" access="ROLE_GCFP"></security:intercept-url>
+		<security:intercept-url pattern="/secure/ventas/gestion_facturas.jsp" access="ROLE_GCFP"></security:intercept-url>
+
+		<security:custom-filter position="CAS_FILTER" ref="casAuthenticationFilter"></security:custom-filter>
+	</security:http>
+
+
+	<!--
+		Required for the casProcessingFilter, so define it explicitly set and
+		specify an Id Even though the authenticationManager is created by
+		default when namespace based config is used.
+	-->
+	<security:authentication-manager alias="authenticationManager">
+		<security:authentication-provider ref="casAuthenticationProvider"></security:authentication-provider>
+	</security:authentication-manager>
+
+	<!--
+		This section is used to configure CAS. The service is the
+		actual redirect that will be triggered after the CAS login sequence.
+	-->
+	<bean id="serviceProperties" class="org.springframework.security.cas.ServiceProperties">
+		<property name="service" value="http://localhost:8080/IDwebapp/j_spring_cas_security_check"></property>
+		<property name="sendRenew" value="false"></property>
+	</bean>
+
+        <!--
+		The CAS filter handles the redirect from the CAS server and starts the ticket validation.
+	-->
+	<bean id="casAuthenticationFilter" class="org.springframework.security.cas.web.CasAuthenticationFilter">
+		<property name="authenticationManager" ref="authenticationManager"></property>
+	</bean>
+
+	<!--
+		The entryPoint intercepts all the CAS authentication requests.
+		It redirects to the CAS loginUrl for the CAS login page.
+	-->
+	<bean id="casAuthenticationEntryPoint" class="org.springframework.security.cas.web.CasAuthenticationEntryPoint">
+		<property name="loginUrl" value="http://localhost:8090/cas-server-webapp-4.0.0/login"></property>
+		<property name="serviceProperties" ref="serviceProperties"></property>
+	</bean>
+
+	<!--
+		Handles the CAS ticket processing.
+	 -->
+	<bean id="casAuthenticationProvider" class="org.springframework.security.cas.authentication.CasAuthenticationProvider">
+		<property name="userDetailsService" ref="userService"></property>
+		<property name="serviceProperties" ref="serviceProperties"></property>
+		<property name="ticketValidator">
+			<bean class="org.jasig.cas.client.validation.Cas20ServiceTicketValidator">
+				<constructor-arg index="0" value="http://localhost:8090/cas-server-webapp-4.0.0"></constructor-arg>
+			</bean>
+		</property>
+		<property name="key" value="cas"></property>
+	</bean>
+
+	<!--
+		The users available for this application.
+	-->
+	<security:user-service id="userService">
+		<security:user name="casuser" authorities="ROLE_USER"></security:user>
+		<security:user name="ender" authorities="ROLE_AC,ROLE_GCP,ROLE_GNT,ROLE_GCFP"></security:user>
+		<security:user name="petra" authorities="ROLE_GCFP"></security:user>
+		<security:user name="bonzo" authorities="ROLE_GNT"></security:user>
+		<security:user name="carn" authorities="ROLE_GCP"></security:user>
+		<security:user name="dink" authorities="ROLE_A"></security:user>
+	</security:user-service>
+
+</beans>

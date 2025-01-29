@@ -1,0 +1,294 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{enumitem}
+\usepackage{hyperref} 
+\usepackage{listings}
+\hypersetup{pdftex,colorlinks=true,allcolors=blue}
+\usepackage{graphicx}
+\hypersetup{
+    pdftitle={PEC1},
+    pdfauthor={Pablo Riutort Grande},
+    pdfsubject={Identidad Digital},
+    bookmarksnumbered=true,     
+    bookmarksopen=true,         
+    bookmarksopenlevel=1,       
+    colorlinks=true,            
+    pdfstartview=Fit,           
+    pdfpagemode=UseOutlines,    % this is the option you were lookin for
+    pdfpagelayout=TwoPageRight
+}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hypcap}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+\lstset{style=mystyle}
+
+\usepackage{xparse}
+\NewDocumentCommand{\codeword}{v}{%
+\texttt{{#1}}
+}
+\author{Pablo Riutort Grande}
+\title{Identidad Digital\\ \vspace{1cm}\textbf{Primera Práctica (PRAC1)}}
+\begin{document}
+\maketitle
+\pagebreak
+\section*{Introducción}
+Este documento recoge los pasos a seguir para la resolución de la primera práctica de la asignatura de Identidad Digital. Se compone de dos apartados: Preparación y Desarrollo donde se explican los pasos a seguir para preparar el entorno sobre el cuál se ha ejecutado la práctica, la creación y modificación del software necesario para asumir los objectivos de seguridad propuestos por la práctica y, finalmente, se explica cómo estos factores culminan el la aplicación IDwebapp que cumple con los requisitos de la práctica en forma de aplicación web.
+
+\section*{Preparación}
+El entorno de la práctica se compone de los siguientes elementos:
+\begin{itemize}
+\item Java SE Development Kit (JDK) v9.0.4.11+
+\item Apache Tomcat 9.0.27
+\end{itemize}
+
+A continuación se espeficica un listado de archivos que fueron modificados para la correcta ejecución de la práctica, todos estos archivos están dentro de la carpeta de Apache cuyo path completo es \codeword{/opt/apache-tomcat-9.0.27}.\\
+
+Siguiendo las instrucciones del archivo proporcionado \textit{Manual\_JAASRealm\_Tomcat.pdf} los siguientes archivos fueron creados o modificados:
+
+\begin{itemize}
+\item PlainLoginModule.java situado en \codeword{lib/PlainLoginModule.java}
+\item PlaginRolePrincipal.java situado en \codeword{lib/PlainRolePrincipal.java}
+\item PlainUserPrincipal.java situado en \codeword{lib/PlainUserPrincipal.java}
+\item jaas.config situado en \codeword{conf/jaas.config}
+\item setenv.sh situado en \codeword{bin/setenv.sh}
+\item startup.sh situado en \codeword{bin/startup.sh}
+\item server.xml situado en \codeword{conf/server.xml}
+\end{itemize}
+Adicionalmente, se crearon los siguientes ficheros para la gestión de datos de usuarios:
+\begin{itemize}
+\item DatabaseManager.java situado en \codeword{lib/DatabaseManager.java}
+\item database.txt situado en \codeword{lib/database.txt}. Concretamente, el path de este archivo está especificado como variable en el DatabaseManager. Es importante que el path de este archivo sea el completo: \codeword{/opt/apache-tomcat-9.0.27/lib/database.txt}.
+\end{itemize}
+
+Y se situó el directorio suministrado IDwebapp en \codeword{webapps/IDwebapp} y para la correcta visualización de los datos y flujo de la aplicación:
+\begin{itemize}
+\item web.xml en \codeword{webapps/IDwebapp/WEB-INF/web.xml}
+\item 403.jsp en \codeword{webapps/IDwebapp/403.jsp}
+\item error.jsp en \codeword{webapps/IDwebapp/error.jsp}
+\item login.jsp en \codeword{webapps/IDwebapp/403.jsp}
+\item img/check.svg en \codeword{webapps/IDwebapp/img/check.svg}
+\item img/times.svg en \codeword{webapps/IDwebapp/img/times.svg}
+\end{itemize}
+
+\subsection*{URL de la aplicación}
+La URL de acceso que se ha utilizado es \codeword{localhost:8080/IDwebapp}.
+
+\section*{Desarrollo}
+A continuación se especifica en detalle qué cambios fueron efectuados en los archivos listados en el apartado anterior para cumplir con los requisitos de la práctica.
+
+\subsection*{startup.sh}
+Se ha añadido en el fichero de startup una línea que compila los ficheros .java del directorio lib
+\begin{lstlisting}[language=bash]
+echo "Compiling resources..."
+javac ../lib/*.java
+\end{lstlisting}
+
+\subsection*{DatabaseManager.java}
+Esta clase gestiona la creación de usuarios con password seguro y también gestiona el documento database.txt, donde se guardan los usuarios y de donde se recoge la información.\\
+
+\lstinputlisting[language=java,firstline=18,lastline=21]{DatabaseManager.java}
+Se ha implementado un pepper y un keystrechtingIndex para iterar en la función de hash del password. La variable separator existe para utilizarla a modo de separador de datos de un mismo usuario en database.txt, de forma similar a lo usando en shadow passwords de Linux.\\
+
+Para simplificar la práctica, un usuario se guarda a modo de texto en database.txt. En el método main de esta clase tenemos la llamada a saveUser que guarda los datos de un usurio (nombre, apellido, login, usuario y listado de roles).
+\lstinputlisting[language=java,firstline=31,lastline=57]{DatabaseManager.java}
+La función saveUser recibe los datos del usuario, crea una contraseña mediante el algoritmo SHA3 512 y guarda en database.txt los datos suministrados y generados separados por ':'*.
+\lstinputlisting[language=java,firstline=82,lastline=102]{DatabaseManager.java}
+
+\textit{*Debido a que los datos de los usuarios no tienen el carácter ':' en sus datos, este enfoque funciona para este caso concreto.}\\
+
+Función de generación de salt, necesario para la función generadora de contraseñas:
+\lstinputlisting[language=java,firstline=75,lastline=80]{DatabaseManager.java}
+
+La función que utiliza el proyecto para generar las contraseñas utiliza la salt suministrada por parámetro y el pepper de la propia clase. Integra la salt y la pepper en una instancia de SHA3 512 y luego itera tantas veces como se indica en el keystrechtingIndex para generar el hash del password. Transforma el hash en String para luego guardarlo en el archivo de base de datos.
+\lstinputlisting[language=java,firstline=59,lastline=73]{DatabaseManager.java}
+
+Finalmente, para determinar que los datos suministrados por la aplicación son correctos, se crea la función auxiliar getUserData donde con un login y un password se obtienen todos los datos del usuario.
+
+\lstinputlisting[language=java,firstline=104,lastline=136]{DatabaseManager.java}
+Para simplificar, la estructura utilizada para representar un usuario es un simple ArrayList de tipo String que recoge los datos de manera indexada:
+\begin{enumerate}[start=0]
+\item Nombre
+\item Apellido
+\item username o login
+\item hash del password
+\item salt
+\item Primer rol
+\end{enumerate}
+Como los roles ocupan la última posición de la lista y es el único elemento de tamaño variable, tan solo hay que iterar desde el primer rol hasta el final del ArrayList para obtener toda la información relativa al usuario.\\
+Al obtener los datos del usuario, \textbf{si el hash de la contraseña suministrada con la salt del usuario indicado por username coinciden, entonces los datos introducidos son correctos }y se devuelven todos los datos del usuario:
+
+\begin{lstlisting}[language=java]
+if (get_SHA3_512_SecurePassword(password, StringToBytes(retrievedSalt))
+        .equals(retrievedPassword)){
+\end{lstlisting}
+
+\subsubsection*{database.txt}
+A continuación se muestra el resultado de la función saveUser.
+\begin{lstlisting}[language=bash]
+Ender:Wiggin:ender:
+ef0c49669eaaf2de7a68d09f8a969be07e9cc5f9edbe960e83d16d7ac61df8b
+04e23a3069d75ce83e105892c69c69c42e5b4c63bb86c6d8bebc9cafcc914ee8c:
+ljOlxVJS9FZMExcWuS1u6Q==:AC:GCFP:GNT:GCP:
+Petra:Arkanian:petra:
+8ab2e24b06126dec7d69a46826b109fe93c95bcc61b5fe8589aab519fbe49d34a
+6435108c0fa5cc8da320790fed070ebf37afce060093ad73a9b01a38cf65662:
+/tU4t2nr5PQF929GWncEbA==:GCFP:
+Bonzo:Madrid:bonzo:
+cc27cd3ab6009dbc0a180e58002c1bea39b28318e6b447075df09e8325eab62e
+fafa6cdc0d8fd1350d2a8775737aeb9c12126d3c14d6261059fe9e4bd31f2da3:
+jrcuHcN81c7fpctlq+C8TA==:GNT:
+Carn:Carby:carn:
+276040cdba8d2822ee6f75c1ffbfcc2c556dc29c73383702710ddcdc1438a09a
+5c4c4ff5d6f72af842aedc329d0176f6049631284cddfc7aee67de0770dd8379:
+BeWyP84C5sfu+mU0f3EZYQ==:GCP:
+Dink:Meeker:dink:66f2ab88b0584e37d237a5cd9e9c18dfac4ba543ed41be7
+5061508bfb35ea65f1e119837d73ba982f0bcde5ad516d68ab09d3c342948026
+2434627f8dac5589b:R5O6yqCW6RCL/rNv6MUyrw==:A:
+\end{lstlisting}
+Se guardan los datos del usuario separados por ':' de forma que luego su recuperación solo requiere separar el String por este carácter separador.\\
+Cabe destacar que la ruta de este archivo está especificada en el propio DatabaseManager como ruta absoluta y se espera que esté en el directorio lib de Apache.
+
+\subsection*{PlainLoginModule.java}
+Se añaden los parámetros firstName, lastName y roles como un ArrayList para guardar todos los roles de un mismo usuario en una misma estructura
+\lstinputlisting[language=java,firstline=33,lastline=37]{PlainLoginModule.java}
+
+Una vez obtenidos los datos de login, procedemos a usar la clase DatabaseManagement para obtener los datos de la base de datos. Si no obtenemos ningún usuario con esas credenciales, entonces lanzamos una excepción. En caso contrario, procederemos a construir nuestro usuario suministrando los datos que tenemos en la base de datos y validando correctamente al mismo.
+\lstinputlisting[language=java,firstline=105,lastline=137]{PlainLoginModule.java}
+
+Los datos obtenidos mediante el gestor quedan guardados en las variables anteriormente declaradas.\\
+
+Podemos ver cómo ahora se suministran el nombre y los roles al usuario al subject.
+
+\lstinputlisting[language=java,firstline=56,lastline=77]{PlainLoginModule.java}
+
+De modo similar, para la función de logout, volvemos a obtener el usuario de la misma forma pero esta vez tenemos que eliminar los datos del subject.
+
+\lstinputlisting[language=java,firstline=160,lastline=174]{PlainLoginModule.java}
+
+\subsection*{PlainUserPrincipal.java}
+
+Para que el PlainLoginModule pueda suministrar los datos de nombre, apellido y roles al usuario, se ha modificado la clase PlainUserPrincipal de tal forma que el constructor ahora acepta dichos parámetros.
+\lstinputlisting[language=java,firstline=4,lastline=16]{PlainUserPrincipal.java}
+Además, para cumplir con los requisitos de la práctica, la función toString queda modificada de tal forma que se muestran todos los datos relevantes del usuario.
+\lstinputlisting[language=java,firstline=22,lastline=31]{PlainUserPrincipal.java}
+
+\subsection*{jaas.config}
+Este archivo de configuración vincula el login de IDwebapp con la clase PlainLoginModule
+\lstinputlisting[language=java]{jaas.config}
+
+\subsection*{setenv.sh}
+Declaramos la siguiente variable de entorno para que Tomcat pueda encontrar nuestro archivo de configuración.
+\lstinputlisting[language=bash]{setenv.sh}
+
+\subsection*{server.xml}
+Se añade el siguiente realm que especifica qué clases son las encargadas de gestionar los usuarios y los roles para el servidor de Tomcat.
+\lstinputlisting[language=XML,firstline=137,lastline=140]{server.xml}
+
+
+\subsection*{web.xml}
+Se crea el siguiente archivo de web.xml dentro de la aplicación IDwebapp. En él se declaran las restricciones de seguridad y los roles que pueden acceder y de qué forma a los recursos de nuestra aplicación. Ponemos como ejemplo la restricción de autorización de compras:
+
+\lstinputlisting[language=XML,firstline=32,lastline=49]{web.xml}
+\textit{Vemos cómo al recurso $/secure/compras/autorizar_compras.jsp$ solo se puede acceder si el rol es AC.}\\
+
+A continuación se declaran los recursos relacionados con el login y la página de error al que se redirige si este no ha sido satisfactorio.
+
+\lstinputlisting[language=XML,firstline=147,lastline=153]{web.xml}
+
+También tenemos un página de error de acceso (HTTP 403 - Forbidden).
+
+\lstinputlisting[language=XML,firstline=155,lastline=158]{web.xml}
+
+Finalmente, declaramos los roles disponibles para nuestra aplicación.
+
+\lstinputlisting[language=XML,firstline=160,lastline=175]{web.xml}
+
+Versión completa del archivo:
+\lstinputlisting[language=XML]{web.xml}
+
+\subsection*{403.jsp}
+Página de error HTTP 403, mostramos un mensaje de error y la opción de redirección al menú.
+\lstinputlisting[language=HTML]{403.jsp}
+
+\subsection*{error.jsp}
+Página de error de login. Mostramos el mensaje de error y damos la opción de redigir al index.
+\lstinputlisting[language=HTML]{error.jsp}
+
+\subsection*{login.jsp}
+Formulario de login.
+\lstinputlisting[language=HTML]{login.jsp}
+
+\subsection*{menu.jsp}
+En este documento, las secciones accesibles por los roles se controlan mediante estructuras de control \codeword{if} para mostrar una sección u otra en función del rol que tenga un usuario. Esta información la podemos saber gracias a la función \codeword{isUserInRole()} que devuelve si el usuario pertenece al rol indicado por parámetro.
+
+\subsubsection*{Mostrar nombre competo de usuario, login y roles}
+Llamamos a la función \codeword{toString()} del \codeword{getUserPrincipal()} que, como se explica en la sección \codeword{PlainUserPrincipal.java} ha sido modificada para mostrar los datos requeridos.
+\lstinputlisting[language=HTML,firstline=12,lastline=12]{menu.jsp}
+
+\subsubsection*{Módulo de ventas}
+Tan solo el rol GCFP tiene acceso a la gestión de clientes y de facturas. Ambos GCFP y A pueden gestionar presupuestos.
+\lstinputlisting[language=HTML,firstline=14,lastline=37]{menu.jsp}
+
+\subsubsection*{Módulo de compras}
+Tan solo el rol GCP tiene acceso a la gestión de compras. Ambos GCP y A pueden gestionar proveedores y tan solo AC puede autorizar compras.
+\lstinputlisting[language=HTML,firstline=39,lastline=62]{menu.jsp}
+
+\subsubsection*{Módulo de nóminas}
+Tan solo el rol GNT tiene acceso a la gestión de nóminas y ambos GCP y A pueden gestionar trabajadores.
+\lstinputlisting[language=HTML,firstline=65,lastline=79]{menu.jsp}
+
+
+\subsection*{logout}
+Para hacer la función de logout, llamos al \codeword{index.jsp} con parámetro \codeword{logoff=true} desde \codeword{menu.jsp}.
+\lstinputlisting[language=HTML,firstline=81,lastline=81]{menu.jsp}
+El index recoge el parámetro y, si está presente, invalida la sesión.
+\lstinputlisting[language=HTML,firstline=2,lastline=8]{index.jsp}
+
+
+\subsection*{Directorio img}
+El directorio img contiene las imágenes para mostrar si una sección es accesible por un rol u otro. Comprobamos si se cumple un rol y mostramos un tick \ref{fig:check}, en caso contrario una cruz \ref{fig:times}.
+\begin{lstlisting}[language=HTML]
+<img src='<%=response.encodeURL("../img/check.svg") %>
+\end{lstlisting}
+
+\pagebreak
+\begin{figure}
+  \includegraphics[width=\linewidth]{check.png}
+  \caption{Check que indica que el acceso a la sección está concedido para ese rol}
+  \label{fig:check}
+\end{figure}
+
+\begin{figure}
+  \includegraphics[width=\linewidth]{times.png}
+  \caption{Cruz que indica que el acceso a la sección está denegado para ese rol}
+  \label{fig:times}
+\end{figure}
+
+
+\end{document}

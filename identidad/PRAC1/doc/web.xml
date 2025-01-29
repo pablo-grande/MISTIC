@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+                      http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+  version="3.1"
+  metadata-complete="true">
+
+    <description>
+	     ID webapp
+    </description>
+    <display-name>ID webapp</display-name>
+
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+
+    <security-constraint>
+      <display-name>Restriccion menu</display-name>
+      <web-resource-collection>
+         <web-resource-name>Protected Area - Deny methods</web-resource-name>
+         <!-- Define the context-relative URL(s) to be protected -->
+         <url-pattern>/secure/menu.jsp</url-pattern>
+      </web-resource-collection>
+      <auth-constraint>
+         <!-- Anyone with one of the listed roles may access this area -->
+         <role-name>*</role-name>
+      </auth-constraint>
+    </security-constraint>
+
+    <security-constraint>
+      <display-name>Restriccion 1: Autorizar Compras</display-name>
+      <web-resource-collection>
+         <web-resource-name>Protected Area - Allow methods</web-resource-name>
+         <!-- Define the context-relative URL(s) to be protected -->
+         <url-pattern>/secure/compras/autorizar_compras.jsp</url-pattern>
+         <!-- If you list http methods, only those methods are protected so -->
+         <!-- the constraint below ensures all other methods are denied     -->
+         <http-method>DELETE</http-method>
+         <http-method>GET</http-method>
+         <http-method>POST</http-method>
+         <http-method>PUT</http-method>
+      </web-resource-collection>
+      <auth-constraint>
+         <!-- Anyone with one of the listed roles may access this area -->
+         <role-name>AC</role-name>
+      </auth-constraint>
+    </security-constraint>
+
+    <security-constraint>
+      <display-name>Restriccion 2: Gestion de clientes, facturas y presupuestos</display-name>
+      <web-resource-collection>
+         <web-resource-name>Protected Area - Allow methods</web-resource-name>
+         <!-- Define the context-relative URL(s) to be protected -->
+         <url-pattern>/secure/ventas/gestion_clientes.jsp</url-pattern>
+         <url-pattern>/secure/ventas/gestion_facturas.jsp</url-pattern>
+         <url-pattern>/secure/ventas/gestion_presupuestos.jsp</url-pattern>
+         <!-- If you list http methods, only those methods are protected so -->
+         <!-- the constraint below ensures all other methods are denied     -->
+         <http-method>DELETE</http-method>
+         <http-method>GET</http-method>
+         <http-method>POST</http-method>
+         <http-method>PUT</http-method>
+      </web-resource-collection>
+      <auth-constraint>
+         <!-- Anyone with one of the listed roles may access this area -->
+         <role-name>GCFP</role-name>
+      </auth-constraint>
+    </security-constraint>
+
+    <security-constraint>
+      <display-name>Restriccion 3: Gestion de nominas y trabajadores</display-name>
+      <web-resource-collection>
+         <web-resource-name>Protected Area - Allow methods</web-resource-name>
+         <!-- Define the context-relative URL(s) to be protected -->
+         <url-pattern>/secure/nominas/gestion_nominas.jsp</url-pattern>
+         <url-pattern>/secure/nominas/gestion_trabajadores.jsp</url-pattern>
+         <!-- If you list http methods, only those methods are protected so -->
+         <!-- the constraint below ensures all other methods are denied     -->
+         <http-method>DELETE</http-method>
+         <http-method>GET</http-method>
+         <http-method>POST</http-method>
+         <http-method>PUT</http-method>
+      </web-resource-collection>
+      <auth-constraint>
+         <!-- Anyone with one of the listed roles may access this area -->
+         <role-name>GNT</role-name>
+      </auth-constraint>
+    </security-constraint>
+
+    <security-constraint>
+      <display-name>Restriccion 4: Gestion de compras y proveedores</display-name>
+      <web-resource-collection>
+         <web-resource-name>Protected Area - Allow methods</web-resource-name>
+         <!-- Define the context-relative URL(s) to be protected -->
+         <url-pattern>/secure/compras/gestion_proveedores.jsp</url-pattern>
+         <url-pattern>/secure/compras/gestion_compras.jsp</url-pattern>
+         <!-- If you list http methods, only those methods are protected so -->
+         <!-- the constraint below ensures all other methods are denied     -->
+         <http-method>DELETE</http-method>
+         <http-method>GET</http-method>
+         <http-method>POST</http-method>
+         <http-method>PUT</http-method>
+      </web-resource-collection>
+      <auth-constraint>
+         <!-- Anyone with one of the listed roles may access this area -->
+         <role-name>GCP</role-name>
+      </auth-constraint>
+    </security-constraint>
+
+    <security-constraint>
+      <display-name>Restriccion 5: Gestion de auditor</display-name>
+      <web-resource-collection>
+         <web-resource-name>Protected Area - Allow methods</web-resource-name>
+         <!-- Define the context-relative URL(s) to be protected -->
+         <url-pattern>/secure/nominas/gestion_trabajadores.jsp</url-pattern>
+         <url-pattern>/secure/compras/gestion_proveedores.jsp</url-pattern>
+         <url-pattern>/secure/ventas/gestion_presupuestos.jsp</url-pattern>
+         <!-- If you list http methods, only those methods are protected so -->
+         <!-- the constraint below ensures all other methods are denied     -->
+         <http-method>DELETE</http-method>
+         <http-method>GET</http-method>
+         <http-method>POST</http-method>
+         <http-method>PUT</http-method>
+      </web-resource-collection>
+      <auth-constraint>
+         <!-- Anyone with one of the listed roles may access this area -->
+         <role-name>A</role-name>
+      </auth-constraint>
+    </security-constraint>
+
+    <security-constraint>
+      <display-name>Restriccion pagina principal</display-name>
+      <web-resource-collection>
+         <web-resource-name>Protected Area - Deny methods</web-resource-name>
+         <!-- Define the context-relative URL(s) to be protected -->
+         <url-pattern>/secure/*</url-pattern>
+         <http-method-omission>DELETE</http-method-omission>
+         <http-method-omission>GET</http-method-omission>
+         <http-method-omission>POST</http-method-omission>
+         <http-method-omission>PUT</http-method-omission>
+      </web-resource-collection>
+      <!-- An empty auth constraint denies access -->
+      <auth-constraint />
+    </security-constraint>
+
+    <!-- Default login configuration uses form-based authentication -->
+    <login-config>
+      <auth-method>FORM</auth-method>
+      <form-login-config>
+        <form-login-page>/login.jsp</form-login-page>
+        <form-error-page>/error.jsp</form-error-page>
+      </form-login-config>
+    </login-config>
+
+    <error-page>
+      <error-code>403</error-code>
+      <location>/403.jsp</location>
+    </error-page>
+
+    <!-- Security roles referenced by this web application -->
+    <security-role>
+      <role-name>AC</role-name>
+    </security-role>
+    <security-role>
+      <role-name>GCFP</role-name>
+    </security-role>
+    <security-role>
+      <role-name>GNT</role-name>
+    </security-role>
+    <security-role>
+      <role-name>GCP</role-name>
+    </security-role>
+    <security-role>
+      <role-name>A</role-name>
+    </security-role>
+
+</web-app>

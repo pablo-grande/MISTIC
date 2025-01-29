@@ -1,0 +1,588 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\hypersetup{pdftex,colorlinks=true,allcolors=blue}
+\hypersetup{
+    pdftitle={PEC1},
+    pdfauthor={Pablo Riutort Grande},
+    pdfsubject={Identidad Digital},
+    bookmarksnumbered=true,     
+    bookmarksopen=true,         
+    bookmarksopenlevel=1,       
+    colorlinks=true,            
+    pdfstartview=Fit,           
+    pdfpagemode=UseOutlines,    % this is the option you were lookin for
+    pdfpagelayout=TwoPageRight
+}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hypcap}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+\lstset{style=mystyle}
+
+\author{Pablo Riutort Grande}
+\title{Máster Interuniversitario en Seguridad de las TIC (MISTIC)\\ \vspace{1cm}\textbf{Identidad Digital}\vspace{1cm}\\\textbf{PEC1}}
+\begin{document}
+\maketitle
+\pagebreak
+
+\section{}
+\begin{enumerate}[label=\alph*]
+\item Se generan 4 tipos de claves de sesión en la fase de handshake:
+\begin{enumerate}[label=(\arabic*)]
+\item \textit{client write key}
+\item \textit{server write key}
+\item \textit{client write MAC key}
+\item \textit{server write MAC key}
+\end{enumerate}
+Las \textit{write key} son claves que se utilizan para encriptar mensajes. Los mensajes que quiera mandar el cliente al servidor se encriptarán con la \textit{client write key} y viceversa.\\
+Las \textit{write MAC key} son claves que se utilizan para firmar los mensajes y asegurar su legitimidad. \cite{cloudfare}
+
+\item 
+La función pseudo aleatoria en TLS tiene la siguiente forma \cite{rfc5246_8.1}:
+
+\begin{lstlisting}[language=C]
+master_secret = PRF(pre_master_secret, "master secret",
+                    ClientHello.random + ServerHello.random, 
+                    [0..47]);
+\end{lstlisting}
+
+\begin{itemize}
+\item \textbf{pre\_master\_secret}: Puntero a la semilla de entrada
+\item \textbf{master\_secre}t: Una etiqueta identificadora para el resultado de la función
+\item \textbf{ClientHello.random}: Durante el handshake, en el ``client hello", el cliente genera una secuencia aleatoria de bytes que se utiliza como semilla para generar la master\_secret
+\item \textbf{ServerHello.random}: De igual forma que el \textit{ClientHello.random}, durante el handshake, en el server hello, se genera una secuencia aleatoria de bytes
+\item \textbf{[0..47]}: Tamaño en bytes de master\_secret (48 bytes)
+\cite{cryptosoft}
+\end{itemize}
+
+\item La clave pre\_master\_secret puede generarse de 2 formas distintas denominadas \textit{key agreement} y \textit{key transport} \cite{premaster}:\\
+En el esquema de \textit{key agreement} se utiliza el algoritmo de Diffie-Hellman para generar una pre\_master\_secret en ambos lados (cliente y servidor) de manera independiente y que coincida. En este esquema, para que se generasen las mismas claves de sesión el servidor debería generar la misma pre\_master\_secret que el cliente de manera independiente.\\
+En el esquema de \textit{key transport} el cliente cifra un valor aleatorio con la clave pública del servidor y este es el único material para generar una pre\_master\_secret. En este caso, aunque se genere la misma pre\_master\_secret, hay que recordar que la función pseudo aleatoria también utiliza bits aleatorios generados en ambas partes para generar las claves de sesión \cite{cloudfare} \cite{cryptosoft}, por tanto, no se generarán las mismas claves de sesión con el mismo secreto pre-maestro por parte del cliente.
+
+\item En el caso de estar utilizando el esquema de \textit{key transport} el cliente es el único que aporta el material del pre\_master\_secret. Este material es cifrado con la clave pública del servidor y posteriormente descrifrado por este con la clave privada. Para determinar si ha habido un uso de una pre\_master\_secret anterior, tan sólo habría que cifrar este secreto con la clave pública del servidor y compararlo con el nuevo cifrado que el cliente está mandando al servidor para ver si coinciden \cite{premaster}.
+
+\item En la fase de handshake de TLS, se inicia la conexión entre servidor y cliente con un mensaje de \textit{Client Hello} y \textit{Server Hello}:
+\begin{enumerate}[label=(\arabic*)]
+\item \textit{Client Hell}o: Envía qué versión de TLS soporta y el client random utilizado para el master\_secret.
+\item \textit{Server Hell}o: Devuelve un certificado SSL y el server random.
+\end{enumerate}
+Opcionalmente, en el \textit{Server Hello}, el servidor puede solicitar un certificado de atenticación al cliente \cite{rfc5246_7.4.6}. Este certificado del cliente es similar al del servidor: el cliente firma digitalmente datos aleatorios y envía tanto el certificado como la firma al servidor, que validará la firma y la validez del certificado. \cite{redhat}
+
+\end{enumerate}
+
+\section{}
+
+\begin{enumerate}[label=\alph*]
+\item Los passwords se guardan de forma cifrada en un fichero llamado ``/etc/passwd" que es públicamente legible. Este cifrado consiste en primero generar un valor aleatorio y una función de hash de único sentido. Este valor aleatorio (salt) pasa a ser guardado con el password cifrado con la función de hash. Para comprobar que la contraseña introducida por un usuario es correcta, esta, se cifra con la salt del password guardado en ``/etc/passwd" de tal forma que, si coinciden, se trata de la misma contraseña. \\
+En los sistemas UNIX los shadow password añaden una mejora de seguridad a la hora de identificar un usuario por contraseña ya que mueven la información públicamente legible de ``/etc/passwd'' a ``/etc/shadow" que es únicamente legible por el usuario root además de añadir información sobre caducidad y políticas de seguridad. \cite{shadow1} \cite{shadow2}\\
+
+La salt es un dato aleatorio utilizado para generar el resultado de una función hash, la pepper son datos aleatorios que se añaden al password antes de generar el hash. La salt se suele guardar junto al hash en base de datos pero la pepper es secreto y se guarda de manera segura y separada \cite{saltpepper}. El valor de la salt no es secreto y puede ser aleatorio, de manera que se pueden cifrar contraseñas, aunque sean la misma, de manera única con una salt lo bastante grande. De esta forma se previenen ataques de Rainbow Tables, que consiste en hacer comparaciones de hashes de passwords precifrados hasta dar con una coincidencia y deducir el password utilizado \cite{saltpepper} \cite{rainbow}.\\
+
+
+\item
+  \begin{tabular}{ | c | c | c | c | c | c | }
+    \hline
+     Tarea & Número de caracteres  & Salt & Hash & Contraseña & User Time \\ \hline
+     b.1 & 3 & sa & sa/o0tROYHVI2 & sal & 	4m3{.}243s \\ \hline
+     b.2 & 4 & lt & lt0lAYMgxiZJU & yuzu & 392m27{.}112s\\
+    \hline
+  \end{tabular}
+  
+En el caso del ejercicio b.2 se ha modificado el script añadiendo un bucle adicional al recorrido de la variable space1\\
+\begin{lstlisting}[language=bash]
+		# modificaciones
+		for t in $space1
+		do
+			variable=$(openssl passwd -crypt -salt "$1" "$i$j$k$t")
+			if [ "$variable" = $2 ]
+			then
+				echo password found: $i$j$k$t
+				exit
+			fi
+		done
+		# fin de modiciaciones
+\end{lstlisting}
+La variable \$t formará parte del material para obtener el hash.
+
+\item Sabiendo que nuestro alfabeto es de 80 caracteres de longitud y que los caracteres que componen a una contraseña se pueden repetir, tenemos que para un contraseña de longitud \textit{n} las posibles combinaciones que se pueden hacer son de $ 80^{n} $. \\
+Cada carácter de la contraseña se compone de 80 posibilidades y, de esas 80, cada una tiene otras 80 posibles ramificaciones:
+\begin{center}
+$ 80 \times 80 \times 80 \cdots \times 80 = 80^{n} $
+\end{center}
+Particularmente, para los casos de $ n = [3, 4, 5, 6, 7, 8] $ tendremos las siguientes posibles combinaciones:
+
+\begin{center}
+  \begin{tabular}{ | c | l | }
+    \hline
+     $ n = 3 $ & 512,000 \\ \hline
+     $ n = 4 $ & 40,960,000 \\ \hline
+     $ n = 5 $ & 3,276,800,000 \\ \hline
+     $ n = 6 $ & 262,144,000,000 \\ \hline
+     $ n = 7 $ & $2{.}097152\times10^{13}$ \\ \hline
+     $ n = 8 $ & $1{.}6777216\times10^{15}$ \\
+    \hline
+  \end{tabular}
+\end{center}
+
+Para calcular el tiempo que sería necesario efectuar todas esas combinaciones haremos una estimación basándonos en lo que tarda openssl en cifrar una palabra, este tiempo se multiplica por las posibles combinaciones y tendremos una estimación de lo que tardaría en comprobar si el cifrado es el mismo considerando el tiempo de comparación de 2 palabras despreciable. \\
+El ordenador utilizado para este cálculo tiene un procesador Intel(R) Core(TM) i5-8250U que tiene 65{.}770 MIPS \cite{i5} y 4 núcleos = 263,080 MIPS y un supercomputador puede hacer 200 cuatrillones de cálculos por segundo \cite{IBM}\\
+
+Si al ejecutar el comando openssl se tardan unos 0m0{.}007s en el i5, en un supercomputador se tardarán unos $2{.}66079 \times 10^{-11}$ segundos aproximadamente.
+
+\begin{center}
+$T_{ossl}i5 = 0{.}007s$\\
+$T_{ossl}SC = 2{.}66079 \times 10^{-11}s$
+\end{center}
+
+
+\begin{table}[h!]
+  \begin{tabular}{ | l | l | l | }
+    \hline
+      Combinaciones  & $T_{ossl}i5 \times Combinaciones(n) $ & $T_{ossl}SC \times Combinaciones(n)$ \\ \hline
+        512,000  & 3,584 s & $1{.}36232448\times10^{-5}$ s\\ \hline
+        40,960,000 & 286,720 s & $1{.}089859584\times10^{-3}$ s\\ \hline
+        3,276,800,000 & 22,837,600 s & 0{.}087 s \\ \hline
+        262,144,000,000 & 1,835,008,000 s & 6{.}975 s\\ \hline
+        $2{.}097152\times10^{13}$ & $1{.}4680064\times10^{12}$ s & 558{.}008 s\\ \hline
+        $1{.}6777216\times10^{15}$ & $1{.}17440512\times10^{13}$ s & 44,640{.}648 s\\ \hline
+  \end{tabular}
+\end{table}
+
+\item Para este ejercicio se ha utilizado un diccionario de palabras de longitud 8 a partir de los diccionarios proporcionados por el sistema. Este diccionario recibe el nombre de ``8dict'' y se ha generado de la siguiente forma:\\
+
+\begin{lstlisting}[language=bash]
+$ grep -Rowh '\w\{8\}' /usr/share/dict > 8dict
+\end{lstlisting}
+Se concatenan todos los diccionarios, se buscan palabras de longitud 8 y se escriben en el archivo ``8dict".\\
+
+El script es modificado de tal forma que recibe como entrada el fichero de diccionario para comprobar si el hash de las palabras que contiene coincide con el pasado por parámetro:
+\begin{lstlisting}[language=bash]
+#!/bin/bash
+
+if [  $# -le 1 ]
+then 
+	echo "Usage: " $0 SALT PASSWORD_CODED DICTIONARY_FILE
+	exit
+fi
+
+while read word;
+do
+	variable=$(openssl passwd -crypt -salt "$1" "$word")
+	if [ "$variable" = $2 ]
+	then
+		echo password found: $word
+		exit
+	fi
+done < $3
+\end{lstlisting}
+Se elimina la variable space y se pone un bucle while que recorre el diccionario suministrado. Se modifica el comando openssl para que reciba como entrada palabras de este diccionario.
+
+\begin{center}
+  \begin{tabular}{ | c | c | c | c | c | c | }
+    \hline
+     Tarea & Número de caracteres  & Salt & Hash & Contraseña & Tiempo \\ \hline
+     d.1 & 8 & tl & tlTX4.dlNA10k & pimienta & 1m41{.}836s \\ \hline
+     d.2 & 8 & as & asPfzNfPQUiDc & cilantro & 0m9{.}133s \\
+    \hline
+  \end{tabular}
+\end{center}
+
+Como se puede comprobar, existen una diferencia muy considerable de tiempos entre un ordenador convencional y un supercomputador. En el caso del mayor número de combinaciones, un ordenador convencional tardaría cientos de miles de años (unos 372401) y el supercomputador tardaría unos 12 minutos.
+  
+  \begin{table}[h!]
+  \centering
+    \begin{tabular}{ | c | c | c | c | c | }
+    \hline
+      & Tiempos b.1 &  Tiempos b.2 & Tiempos d.1  & Tiempos d.2 \\ \hline
+     real & 5m10{.}790s & 483m33{.}988s & 2m9{.}468s & 0m11{.}462s \\ \hline
+     \textbf{user} & \textbf{4m3{.}243s} & \textbf{392m27{.}112s} & \textbf{1m41{.}836}s & \textbf{0m9{.}133s} \\ \hline
+     sys & 1m14{.}653s & 106m25{.}646s & 0m30{.}752s & 0m2{.}599s \\
+    \hline
+
+  \end{tabular}
+      \caption{Desglose de tiempos}
+  \end{table}
+  
+\end{enumerate}
+
+
+\section{}
+\begin{enumerate}[label=\alph*]
+
+\item 
+\begin{itemize}
+\item $RBAC_{0}$: Modelo básico de usuario, roles y permisos
+\item $RBAC_{1}$: $RBAC_{0}$ + Modelo jerárquico: Los roles se organizan en una estructura jerárquica y se establecen relaciones entre ellos. Los roles de mayor rango ``heredan'' los permisos de los roles de menor rango
+\item $RBAC_{2}$: $RBAC_{0}$ + Modelo restrictivo: añade la separación de deberes (\textit{SoD ``Separation of Duties''}) que permite realizar una acción que permite ser, a su vez, revisada o auditada por otro usuario
+\item $RBAC_{3}$:  $RBAC_{1}$ + $RBAC_{2}$ pero añade la jerarquía de orden parcial, es decir, permite revisión de permisos tanto por rol como por usuario, es decir, se pueden dar o revocar permisos a un único usuario sin que afecte al rol y viceversa \cite{rbac} \cite{nist}.
+\end{itemize}
+
+\item L: Lectura, E: Escritura, G: Generación
+
+\begin{center}
+  \begin{tabular}{ | c | c | c | c | }
+    \hline
+     & \textit{Guión} & \textit{Imagen} & \textit{Música} \\ \hline
+    Esther & L, E & L & L \\ \hline
+    Víctor & L, E, G &  &  \\ \hline
+    Lucía & L & L, G &  \\ \hline
+    Celia &  &  & L, E, G \\ 
+    \hline
+  \end{tabular}
+\end{center}
+
+\item .
+
+\begin{center}
+  \begin{tabular}{ | c | c | c | c | c | c | }
+    \hline
+      & $ P_{1} $ & $P_{2}$ & $P_{3}$ & $P_{4}$ & $P_{5}$ \\ \hline
+    Clara  & X & X &  &  &  \\ \hline
+    Jesús & X &  & X &  &  \\ \hline
+    Fernando & X & X & X & X &  \\ \hline
+    Alfonso & X & X & X & X & X \\ 
+    \hline
+  \end{tabular}
+\end{center}
+
+\item
+\textit{SoD} se utiliza para remediar los posibles conflictos de intereses pueden surgir cuando un usuario adquiere autorización para acciones asociadas a roles conflictivos. Por ejemplo, en un sistema donde un usuario puede solicitar una compra y otro aprobar los datos de la misma puede haber un conflicto de intereses si un mismo usuario tiene roles que le permitan hacer las 2 acciones. Aquí entran en juego las relaciones de separación de deberes \cite{nist}.
+\begin{itemize}
+\item \textbf{Separación de deberes estática}: Añade restricciones a la asignación de roles a usuarios. El hecho de que un usuario pertenezca a un rol le hace incompatible el adquirir otro rol que genere inconsistencias.
+\item \textbf{Separación de deberes dinámica}: Al igual que la separación estática, también añade restricciones a los permisos de usuario, pero en la separación de deberes dinámica se limita la adquisición de permisos por contexto, añadiendo restricciones a los roles que puede adquirir un usuario en una o varias sesiones.
+\end{itemize}
+
+\item .
+\begin{description}
+    \item[Descripción:] Una tarea que requiere de un Tester, de un Programador Junior y de cualquier otro usuario para realizarse.
+    \item[Expresión:] $Tester \oplus Programador Junior \oplus All$
+\end{description}
+
+\begin{description}
+    \item[Descripción:] Una tarea que requiere dos usuarios diferentes, uno de los cuales tiene que ser un Programador Junior o un Programador Senior, y el otro tiene que ser cualquiera menos el Líder Proyecto
+    \item[Expresión:] $(Programador Junior \vee Programador Senior ) \oplus (All \wedge \neg Lider)$
+\end{description}
+
+\end{enumerate}
+
+
+\section{}
+\begin{enumerate}[label=\alph*]
+\item 
+
+\begin{itemize}
+\item \textbf{PAP:} \textit{Policy Administration Point}. Es la entidad del sistema que crea políticas o conjuntos de políticas accesibles para el PDP.
+\item \textbf{PDP:} \textit{Policy Decision Point}. Es la entidad del sistema que evalúa la política aplicable y devuelve una decisión de autorización. Recibe peticiones de contexto en formato XACML del \textit{context handler} y políticas y conjuntos de políticas del PAP.
+\item \textbf{PEP:} \textit{Policy Enforcement Point}. Realiza un control de acceso con peticiones de decisión y haciendo cumplir las decisiones de autorización. Es el punto de entrada de una petición de acceso, se comunicará con el \textit{context handler} para determinar si se accede al recurso o si se deniega el acceso.
+\item \textbf{PIP:} \textit{Policy Information Point}. Es la entidad que provee de valores de atributo. Los atributos son la características de un sujeto, recurso, acción o entorno que pueden ser referenciadas por declaraciones de atributos. El context handler puede solicitar atributos adicionales al PIP sobre sujetos, recursos o entornos que solicite el PDP.
+\item \textbf{Subjects:} Es el actor cuyos atributos son referenciados por predicados.
+\item \textbf{Environment:} Conjunto de atributos relevantes para una decisión de autorización.
+\item \textbf{Resource:} Dato, servicio o componente del sistema.
+\item \textbf{Context handler:} Convierte las peticiones de decisión en la forma canóinica de XACML. Añade valores de atributos a la petición de contexto mediante el PIP y reconvierte las decisiones de autorización de XACML al formato nativo de la petición.
+\end{itemize}
+
+\item 
+\begin{enumerate}[label=(\arabic*)]
+\item El Requester (tarjeta de identificación) envía al PEP su identidad e indica que quiere acceder al recurso de la puerta de acceso a la biblioteca del Campus.
+\item El PEP envía la petición al \textit{context handler} en formato nativo.
+\item El \textit{context handler} transforma la petición en XACML y lo manda al PDP.
+\item El PDP creará una petición basada en los atributos del Requester (en este caso un usuario con el rol de becario del departamento de filosofía), el recurso (la puerta), la acción (abrirla) y otra información relevante.
+\item El PDP evalúa qué política tiene que aplicar según la petición y las políticas disponibles para un determinado Target, que indica a qué conjunto de peticiones se aplica la política. Estas políticas se cargan en el PDP a través del PAP.
+\item Para completar la petición, el PDP puede solicitar datos adicionales al \textit{context handler}, en este caso, quizá haya datos que falten sobre el entorno: la política indica que no se puede acceder los fines de semana (contexto temporal), que la puerta pertenece a la biblioteca y esta pertenece al campus, etc.
+\item El \textit{context handler} solicitará ayuda al PIP para que le ayude a resolver los valores de los atributos necesarios para el PDP.
+\item PIP obtiene los atributos solicitados y se los devuelve al \textit{context handler}.
+\item El \textit{context handler} mandará los resultados al PDP de nuevo.
+\item Una vez obtenidos todos los datos necesarios relativos a la política que se quiere evaluar, el PDP la evalúa: En este caso, la política tiene una regla donde se especifica que un sujeto con determinados atributos (becario del departamento de filosofía) que intenta acceder a un recurso (puerta) situado en un punto concreto (recintos del campus) en una franja temporal concreta tiene el efecto de denegación, por tanto, el PEP devolverá al \textit{context handler} la decisión de denegar la autorización.
+\item El \textit{context handler} transformará la respuesta al formato nativo del PEP y se lo pasará a este.
+\item El PEP verá en la respuesta qué obligación tiene que acatar, resultado de la política aplicada al conjunto de datos suministrado. El PEP cumplirá con la obligación de denegar el acceso al Requester.
+\end{enumerate}
+
+\cite{oasis} \cite{brief} \cite{banking}
+
+\item .
+
+\begin{lstlisting}[language=XML]
+<Policy xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17" PolicyId="1"
+RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable"
+Version="1.0">
+<Description>Policy 1</Description>
+<Target></Target>
+\end{lstlisting}
+Declaración de la política. En este segmento se declara la política con un PolicyId=1 y el schema. RuleCombingAlgId corresponde al algoritmo que debe resolver las reglas, en este caso del ``first-applicable'' cada regla será aplicada en orden, si el target evalúa la condición a True entonces el efecto de la regla corresponderá al efecto de la política. \cite{oasis}\pagebreak
+\begin{lstlisting}[language=XML]
+<Rule Effect="Permit" RuleId="Rule Permit #1">
+<Target>
+<AnyOf>
+<AllOf>
+<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-regexp-match">
+<AttributeValue
+DataType="http://www.w3.org/2001/XMLSchema#string">http://www.uoc.edu/master1
+</AttributeValue>
+<AttributeDesignator
+AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id"
+Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true">
+</AttributeDesignator>
+</Match>
+<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+<AttributeValue
+DataType="http://www.w3.org/2001/XMLSchema#string">read
+</AttributeValue>
+<AttributeDesignator
+AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id"
+Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action"
+DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true">
+</AttributeDesignator>
+</Match>
+</AllOf>
+</AnyOf>
+</Target>
+\end{lstlisting}
+Se introduce la regla de la política especificando el efecto y su identificador. En este caso, si la regla se evalúa a True el efecto será ``Permit'' y, como debido al algoritmo de la política, como consecuencia también será el efecto de la política.\\
+Se presenta el Target de la regla con un primera etiqueta Match que especifica qué función genera una coincidencia sobre qué elemento y de qué forma, en este caso tenemos que habrá un match con una función de expresión regular que coincida con el string ``http://www.uoc.edu/master1". Adicionalmente este string tiene que ser el identificador de un recurso, estos datos vienen determinados por la etiqueta AttributeDesignator.\\
+Encontramos un segundo match que genera una coincidencia mediante la función string-equal si el identificador de la acción que se desea realizar es igual al string ``read".\\
+Es decir, tendremos 2 matches si la acción que se desea realizar es de lectura sobre un recurso cuyo identificador genere una coincidencia con la expresión regular ``http://www.uoc.edu/master1".
+
+\begin{lstlisting}[language=XML]
+<Condition>
+<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-at-least-one-member-of">
+<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-bag">
+<AttributeValue
+DataType="http://www.w3.org/2001/XMLSchema#string">profesor
+</AttributeValue>
+<AttributeValue
+DataType="http://www.w3.org/2001/XMLSchema#string">becario
+</AttributeValue>
+<AttributeValue
+DataType="http://www.w3.org/2001/XMLSchema#string">estudiante
+</AttributeValue>
+</Apply>
+<AttributeDesignator
+AttributeId="group"
+Category="urn:oasis:names:tc:xacml:3.0:group"
+DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true">
+</AttributeDesignator>
+</Apply>
+</Condition>
+</Rule>
+<Rule Effect="Deny" RuleId="Rule Deny #1"></Rule>
+</Policy>
+\end{lstlisting}
+A continuación tenemos un bloque de condiciones que refina la aplicabilidad de la regla. Una condición tiene que ser evaluada a True para que se aplique la regla. En este caso, para que la condición sea evaluada a True se deberán cumplir las funciones especificadas por el tag Apply, estas funciones permiten declarar 3 elementos de tipo string (profesor, becario y estudinte) y determinar si el grupo del contexto pertenece a uno de esos elementos. \\
+
+En resumen, la condición permite evaluar los Match si el requester perenece al grupo becario, profesor o estudiante. Si esa condición se cumple, entonces el requester que acceda a un recurso cuyo identificador haga un regexp-match con ``http://www.uoc.edu/master1'' con acción de leer tendrá una respuesta ``Permit" por parte de la política.
+
+\item
+\begin{enumerate}[label=(\arabic*)]
+\item 
+\begin{lstlisting}[language=XML]
+<Policy xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17" PolicyId="1"
+RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable"
+Version="1.0">
+<Description>Policy 1</Description>
+<Target></Target>
+<Rule Effect="Permit" RuleId="Rule Permit #1">
+<Target>
+<AnyOf>
+<AllOf>
+<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-regexp-match">
+<AttributeValue
+DataType="http://www.w3.org/2001/XMLSchema#string">http://www.uoc.edu/master1
+</AttributeValue>
+<AttributeValue
+DataType="http://www.w3.org/2001/XMLSchema#string">http://www.uoc.edu/master2
+</AttributeValue>
+<AttributeDesignator
+AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id"
+Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true">
+</AttributeDesignator>
+</Match>
+</AllOf>
+</AnyOf>
+</Target>
+</Rule>
+</Policy>
+\end{lstlisting}
+Esta política no requiere de condiciones ya que es abierto a cualquier usuario. \\Se ha añadido un nuevo AttributeValue con id\\ ``http://www.uoc.edu/master2'' para evaluar con la expresión regular. Finalmente, no requiere revisar qué acción se va a efectuar sobre el recurso puesto que se especifica que puede tanto leer como escribir, etc. 
+\end{enumerate}
+
+\item \textit{Access Request} es el mensaje que manda un sujeto al \textit{Policy Enforcement Point} (PEP) para obtener acceso a un recurso del sistema.\\
+\begin{lstlisting}[language=XML]
+<?xml version="1.0" encoding="UTF-8"?>
+<Request xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17 http://docs.oasis-open.org/xacml/3.0/xacml-core-v3-schema-wd-17.xsd"
+ ReturnPolicyIdList="false">
+ <Attributes Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject">
+   <Attribute IncludeInResult="false"
+     AttributeId="urn:oasis:names:tc:xacml:1.0:subject:subject-id">
+     <AttributeValue
+       DataType="urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name">
+       Peter
+      </AttributeValue>
+   </Attribute>
+   <Attribute IncludeInResult="false"
+     AttributeId="urn:oasis:names:tc:xacml:3.0:group">
+     <AttributeValue
+       DataType="urn:oasis:names:tc:xacml:1.0:data-type:string">becario</AttributeValue>
+     <AttributeDesignator
+	  AttributeId="group"
+	  Category="urn:oasis:names:tc:xacml:3.0:group"
+	  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true">
+	 </AttributeDesignator>
+   </Attribute>
+ </Attributes>
+ <Attributes
+   Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource">
+   <Attribute IncludeInResult="false"
+     AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id">
+     <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#anyURI"
+        >http://www.uoc.edu/master2</AttributeValue>
+   </Attribute>
+ </Attributes>
+ <Attributes
+   Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action">
+   <Attribute IncludeInResult="false"
+       AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id">
+     <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string"
+        >read</AttributeValue>
+   </Attribute>
+ </Attributes>
+</Request>
+\end{lstlisting}
+
+\end{enumerate}
+
+\pagebreak
+
+\begin{thebibliography}{9}
+
+ \bibitem{oasis}
+ 	\textbf{OASIS Standard}\\
+ 	\textit{eXtensible Access Control Markup Language (XACML) Version 3.0}\\
+ 	\url{http://docs.oasis-open.org/xacml/3.0/xacml-3.0-core-spec-os-en.html}
+ 
+ \bibitem{saltpepper}
+ 	\textbf{Cryptography: Salt VS Pepper}\\
+ 	\textit{John Spacey}\\
+	\url{https://simplicable.com/new/salt-vs-pepper}
+ 
+ \bibitem{brief}
+ 	\textbf{A Brief Introduction to XACML}\\
+	\url{https://www.oasis-open.org/committees/download.php/2713/Brief_Introduction_to_XACML.html}
+	
+ \bibitem{banking}
+ 	\textbf{XACML for authorization}\\
+ 	\textit{Banking Sample with XACML}\\
+ 	\url{http://xacmlinfo.org/2014/03/11/atm-banking-sample-with-xacml/}
+ 	
+ \bibitem{cloudfare}
+ 	\textbf{Cloudfare}\\
+ 	\textit{What Is a Session Key? | Session Keys and TLS Handshakes}\\
+ 	\url{https://www.cloudflare.com/learning/ssl/what-is-a-session-key/}
+ 
+ \bibitem{cryptosoft}
+ 	\textbf{Cryptographic Token Interface Standard}\\
+	\textit{TLS PRF (pseudorandom function)}\\
+ 	\url{https://www.cryptsoft.com/pkcs11doc/v220/group__SEC__12__32__3__TLS__PRF__.html}
+
+ \bibitem{rbac}
+ 	\textbf{Stack Exchange - Information Security}\\
+ 	\textit{RBAC0 RBAC1 RBAC2 RBAC3 — What do they mean?}\\
+ 	\url{https://security.stackexchange.com/questions/169875/rbac0-rbac1-rbac2-rbac3-what-do-they-mean}
+ 
+ \bibitem{nist}
+ 	\textbf{2. Component Overview}\\
+ 	\textit{Proposed NIST Standard for Role-Based Access Control}\\
+ 	DAVID F. FERRAIOLO, RAVI SANDHU, SERBAN GAVRILA, D. RICHARD KUHN and RAMASWAMY CHANDRAMOULI\\
+ 	\url{http://xml.coverpages.org/NIST-RBAC-ACM2001.pdf}
+ 	
+ \bibitem{rfc5246_7.4.6}
+	\textbf{7.4.6.  Client Certificate}\\
+ 	\textit{The Transport Layer Security (TLS) Protocol Version 1.2}\\
+	Tim Dierks\\
+	\url{https://tools.ietf.org/html/rfc5246#section-7.4.6}
+ 	
+ \bibitem{rfc5246_8.1}
+	\textbf{8.1.  Computing the Master Secret}\\
+	\textit{The Transport Layer Security (TLS) Protocol Version 1.2}\\
+	Tim Dierks\\
+ 	\url{https://tools.ietf.org/html/rfc5246#section-8.1}
+ 	
+ \bibitem{rainbow}
+ \textbf{Defense against rainbow tables}\\
+ \textit{Wikipedia}\\
+ \url{https://en.wikipedia.org/wiki/Rainbow_table}
+ 
+ \bibitem{cloudfare2}
+ 	\textbf{Cloudfare}\\
+ 	\textit{What happens in a TLS handshake}\\
+ 	\url{https://www.cloudflare.com/learning/ssl/what-happens-in-a-tls-handshake/}
+ 
+ \bibitem{premaster}
+ 	\textbf{Stack Overflow}\\
+ 	\textit{in TLS/SSL, what's the purpose of staging from premaster secret to master secret and then to encryption keys?}\\
+ 	\url{https://stackoverflow.com/questions/25258799/in-tls-ssl-whats-the-purpose-of-staging-from-premaster-secret-to-master-secret}
+ 	
+ \bibitem{premaster_generate}
+  	\textbf{Stack Exchange - Information Security}\\
+  	\textit{How is the Premaster secret used in TLS generated?}\\
+ 	\url{https://security.stackexchange.com/questions/63971/how-is-the-premaster-secret-used-in-tls-generated}
+ 
+ \bibitem{redhat}
+	\textbf{1.3.2. Authentication Confirms an Identity}\\
+	\textit{Red Hat Certificate System}\\
+ 	\url{https://access.redhat.com/documentation/en-US/Red_Hat_Certificate_System/8.0/html/Deployment_Guide/Introduction_to_Public_Key_Cryptography-Certificates_and_Authentication.html}
+ 	
+ \bibitem{shadow1}
+ 	\textbf{32.6. Shadow Passwords}\\
+ 	\textit{Red Hat System Administration Guide}\\
+ 	\url{https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/4/html/System_Administration_Guide/s1-users-groups-shadow-utilities.html}
+ 
+ \bibitem{shadow2}
+ 	\textbf{About shadow passwords}\\
+ 	\textit{Indiana University}\\
+ 	\url{https://kb.iu.edu/d/aezz}
+ 	
+ \bibitem{IBM}
+ 	\textbf{The world’s most powerful supercomputers}\\
+ 	\textit{IBM}\\
+ 	\url{https://www.ibm.com/it-infrastructure/power/supercomputing}
+ 
+ \bibitem{i5}
+	\textbf{Instructions per second}\\
+	\textit{Wikipedia}\\
+ 	\url{https://en.wikipedia.org/wiki/Instructions_per_second}
+ 
+\end{thebibliography}
+
+
+\end{document}
