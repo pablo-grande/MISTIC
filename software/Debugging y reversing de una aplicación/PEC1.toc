@@ -1,0 +1,7 @@
+\babel@toc {spanish}{}
+\contentsline {section}{\numberline {1}Introducción}{3}{section.1}%
+\contentsline {section}{\numberline {2}Reversing}{4}{section.2}%
+\contentsline {section}{\numberline {3}Análisis de la función principal}{6}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Vista gráfica}{7}{subsection.3.1}%
+\contentsline {section}{\numberline {4}Alterar el flujo del código}{10}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Patching}{10}{subsection.4.1}%

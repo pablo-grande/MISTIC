@@ -1,0 +1,9 @@
+\babel@toc {spanish}{}
+\contentsline {figure}{\numberline {1}{\ignorespaces Información del proceso ejecutándose}}{4}{figure.1}%
+\contentsline {figure}{\numberline {2}{\ignorespaces Sección de memoria del heap}}{5}{figure.2}%
+\contentsline {figure}{\numberline {3}{\ignorespaces Contenido de la memoria heap. Queda registrado nuestro input ``AAAA'' y la dirección de memoria de la siguiente función a ejecutar}}{5}{figure.3}%
+\contentsline {figure}{\numberline {4}{\ignorespaces Desensamblado de la función regular. Se sitúa en la dirección de memoria 0x080491bd}}{5}{figure.4}%
+\contentsline {figure}{\numberline {5}{\ignorespaces Contenido del registro EIP}}{6}{figure.5}%
+\contentsline {figure}{\numberline {6}{\ignorespaces Sucesivas pruebas con distintos caracteres.}}{6}{figure.6}%
+\contentsline {figure}{\numberline {7}{\ignorespaces La función secret tiene como dirección memoria la 0x08049192}}{7}{figure.7}%
+\contentsline {figure}{\numberline {8}{\ignorespaces Modifación exitosa del heap, hemos accedido a la función secreta}}{7}{figure.8}%

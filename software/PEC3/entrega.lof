@@ -1,0 +1,13 @@
+\babel@toc {spanish}{}
+\contentsline {figure}{\numberline {1}{\ignorespaces Esquema de la aplicación\relax }}{3}{figure.1}%
+\contentsline {figure}{\numberline {2}{\ignorespaces Página principal\relax }}{3}{figure.2}%
+\contentsline {figure}{\numberline {3}{\ignorespaces Página detalle de una noticia\relax }}{4}{figure.3}%
+\contentsline {figure}{\numberline {4}{\ignorespaces Página de login\relax }}{4}{figure.4}%
+\contentsline {figure}{\numberline {5}{\ignorespaces Ejemplo del uso de Maltego sobre la página uoc.edu\relax }}{6}{figure.5}%
+\contentsline {figure}{\numberline {6}{\ignorespaces Ejemplo de netcraft sobre la página uoc.edu\relax }}{6}{figure.6}%
+\contentsline {figure}{\numberline {7}{\ignorespaces Sistema de login de la aplciación\relax }}{7}{figure.7}%
+\contentsline {figure}{\numberline {8}{\ignorespaces Error en el sistema de login\relax }}{8}{figure.8}%
+\contentsline {figure}{\numberline {9}{\ignorespaces Árboles de amenazas\relax }}{10}{figure.9}%
+\contentsline {figure}{\numberline {10}{\ignorespaces La página carga correctamente con el artículo dado por la URL\relax }}{12}{figure.10}%
+\contentsline {figure}{\numberline {11}{\ignorespaces Vista detalle de una noticia.\relax }}{14}{figure.11}%
+\contentsline {figure}{\numberline {12}{\ignorespaces SQL injection en parámetro GET. Se obtiene la información de un usuario en vez de un artículo.\relax }}{14}{figure.12}%

@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Práctica pentesting UOC">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Jekyll v4.1.1">
+    <title>Pentesting · UOC</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/pricing/">
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
+      <h5 class="my-0 mr-md-auto font-weight-normal">Pentesting · UOC</h5>
+      <nav class="my-2 my-md-0 mr-md-3">
+        <a class="p-2 text-dark" href="/">Home</a>
+        <a class="p-2 text-dark" href="#">About</a>
+        <a class="p-2 text-dark" href="mailto:priutortg@uoc.edu">Contact</a>
+      </nav>
+      <div>
+        <a class="btn btn-outline-success" href="/register">Register</a>
+        <a class="btn btn-outline-primary" href="/login">Log In</a>
+      </div>
+    </div>
+
+    <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+      {% if request.path == "/register" %}
+      <h1 class="display-4">Registrar usuario</h1>
+      {% else %}
+      <h1 class="display-4">Log In</h1>
+      {% endif %}
+    </div>
+
+    <div class="container">
+      {% if request.path == "/register" %}
+      <form action="/register" method="POST">
+      {% else %}
+      <form action="/login" method="POST">
+      {% endif %}
+        <div class="text-center">
+          <ul class="list-group list-group-flush">
+              {% if request.path == "/register" %}
+              <li class="list-group-item">
+                <input name="email" placeholder="Email" type="email" required>
+              </li>
+              {% endif %}
+              <li class="list-group-item">
+                <input name="name" placeholder="Name" required>
+              </li>
+              <li class="list-group-item">
+                <input name="password" placeholder="Password" type="password" required>
+              </li>
+              <li class="list-group-item">
+                <button class="btn btn-success" type="submit">Submit</button>
+              </li>
+            </ul>
+        </div>
+      </form>
+    </div>
+
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <script>
+        alert("{{ messages[0] }}");
+    </script>
+    {% endif %}
+    {% endwith %}
+
+  </body>
+</html>

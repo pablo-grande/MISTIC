@@ -1,0 +1,16 @@
+\babel@toc {spanish}{}
+\contentsline {figure}{\numberline {1}{\ignorespaces Llamada al intérprete dash desde terminal\relax }}{4}{figure.1}%
+\contentsline {figure}{\numberline {2}{\ignorespaces Llamada al programa con diferentes parámetros\relax }}{4}{figure.2}%
+\contentsline {figure}{\numberline {3}{\ignorespaces Llamada al programa con parámetros que provocan Segmentation Fault\relax }}{4}{figure.3}%
+\contentsline {figure}{\numberline {4}{\ignorespaces Debugging del programa: Detalle de \textit {Segmentation Fault}\relax }}{5}{figure.4}%
+\contentsline {figure}{\numberline {5}{\ignorespaces Contenido del stack\relax }}{5}{figure.5}%
+\contentsline {figure}{\numberline {6}{\ignorespaces Los registros \$esp y \$ebp pertenecen al top y al bottom de la pila respectivamente.\relax }}{5}{figure.6}%
+\contentsline {figure}{\numberline {7}{\ignorespaces Contenido del stack: La dirección de retorno (\$esp) es la seleccionada.\relax }}{6}{figure.7}%
+\contentsline {figure}{\numberline {8}{\ignorespaces Contenido del stack: La dirección de retorno es la seleccionada. Controlamos el input exacto que tenemos que poner para controlar la dirección de retorno\relax }}{6}{figure.8}%
+\contentsline {figure}{\numberline {9}{\ignorespaces Dirección de ebp (stack bottom) en esta nueva ejecución\relax }}{8}{figure.9}%
+\contentsline {figure}{\numberline {10}{\ignorespaces Contenido del stack: La dirección de retorno (\$eip) es la seleccionada correspondiente a la codificación de los caracteres EIP\relax }}{8}{figure.10}%
+\contentsline {figure}{\numberline {11}{\ignorespaces Contenido del stack: La dirección de retorno (\$eip) es la seleccionada correspondiente a una con instrucción NOP\relax }}{9}{figure.11}%
+\contentsline {figure}{\numberline {12}{\ignorespaces Acceso a una terminal desde input con shellcode en programa vulnerable a Stack Overflow\relax }}{9}{figure.12}%
+\contentsline {figure}{\numberline {13}{\ignorespaces Desensamblaje del ejecutable de shellcode.c\relax }}{10}{figure.13}%
+\contentsline {figure}{\numberline {14}{\ignorespaces Contenido del registro eax en la llamada del shellcode\relax }}{10}{figure.14}%
+\contentsline {figure}{\numberline {15}{\ignorespaces Definición de la función execve\relax }}{11}{figure.15}%

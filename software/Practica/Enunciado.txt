@@ -1,0 +1,23 @@
+La realización de la práctica consta de tres partes
+Creación de un programa con código vulnerable
+Creación de un shellcode para el código vulnerable del programa creado
+Aplicar Reverse Engineering o PenTesting
+Esta práctica se puede realizar en un entorno Windows, Linux o Android (o emulador Android).
+Se trata de realizar un programa sencillo con un código que sea vulnerable y crear un shellcode para este código. No se debe realizar ni un gran programa ni un programa complicado porque este no es el objetivo de la asignatura. Lo que se pretende es crear un shellcode que logre ejecutarse tras aprovechar un exploit en una aplicación.
+Debéis realizar vosotros mismos el programa y el shellcode. Podéis elegir el tipo de vulnerabilidad, por ejemplo: Integer overflow, Desbordamiento de pila Stack overflow o Desbordamiento de heap.
+Aplicar Reverse Engineering o PenTesting : En esta práctica debéis aplicar Reverse Engineering o PenTesting. En el caso del Reverse Enginnering, aunque el programa lo habéis realizado vosotros mismos, debéis analizar con técnicas de Reverse Enginnering cómo y por qué el programa es vulnerable y cómo acuta el Shellcode. En el caso de elegir Pentesting, debéis realizar un test de penetración detectando la vulnerabilidad y la actuación del shellcode.
+ Memoria
+Documento en formato PDF con la siguiente estructura básica, también podéis agregar los apartados o anexos que creáis convenientes:
+ Descripción de la vulnerabilidad que habéis creado y del shelcode así como el desarrollo del Reverse Engineering o el Pentesting
+Entorno de desarrollo: Windows o Linux, versión del sistema operativo y relación y versiones de todo software utilizado.
+Código fuente completo tanto del programa con código vulnerable como del shelcode. El código fuente se debe documentar exhaustivamente.
+Análisis: Razonamiento y explicación detallada del funcionamiento del programa vulnerable y del shelcode, paso a paso de la ejecución de los programas, con ejemplos de los valores para los cuales es vulnerable y en los que no es vulnerable, así como de los diversos valores relevantes que tengan en diferentes momentos la pila, los registros y la memoria.
+Se deben incluir todas las impresiones de pantalla que sean necesarias para razonar y explicar paso a paso la vulnerabilidad y el shellcode en tiempo de ejecución, con impresiones de pantalla del programa IDA, Immunity, OllyDbg, GDB o el que hayáis elegido, los resultados o valores que aparecen en la consola y otros programas que utilicéis en la realización de la práctica.
+Informe de la descripción del problema que tiene el programa y qué solución debería aplicarse para que el programa no fuera vulnerable. (La extensión de este apartado no es necesario que supere la media página)
+ Presentación de la práctica
+ Fichero ZIP que debe incluir los archivos siguientes:
+ Memoria en formato PDF (con el nombre Apellidos_Nombre.pdf )
+ Los archivos del código fuente de los programas.
+Los archivos ejecutables de los programas.
+Otros ficheros que utilicéis en la elaboración de la práctica
+Comprobad que los archivos se extraen del fichero ZIP de forma correcta antes de entregar la práctica

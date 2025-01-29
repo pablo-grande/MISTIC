@@ -1,0 +1,19 @@
+\babel@toc {spanish}{}
+\contentsline {section}{\numberline {1}Introducción}{3}{section.1}%
+\contentsline {section}{\numberline {2}Auditoría}{4}{section.2}%
+\contentsline {subsection}{\numberline {2.1}\textit {Pre-engagement Interactions}}{4}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}\textit {Intelligence Gathering}}{5}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}\textit {Threat Modeling}}{6}{subsection.2.3}%
+\contentsline {subsubsection}{\numberline {2.3.1}Identificación de los activos}{7}{subsubsection.2.3.1}%
+\contentsline {subsubsection}{\numberline {2.3.2}Definición de la arquitectura}{7}{subsubsection.2.3.2}%
+\contentsline {subsubsection}{\numberline {2.3.3}Descomposición de la aplicación}{7}{subsubsection.2.3.3}%
+\contentsline {subsubsection}{\numberline {2.3.4}Identificación de las amenazas}{8}{subsubsection.2.3.4}%
+\contentsline {subsubsection}{\numberline {2.3.5}Mitigación de las amenazas}{11}{subsubsection.2.3.5}%
+\contentsline {subsection}{\numberline {2.4}\textit {Exploitation}}{13}{subsection.2.4}%
+\contentsline {subsubsection}{\numberline {2.4.1}SQL Injection}{14}{subsubsection.2.4.1}%
+\contentsline {subsection}{\numberline {2.5}\textit {Reporting}}{14}{subsection.2.5}%
+\contentsline {section}{\numberline {A}app.py}{16}{appendix.Alph1}%
+\contentsline {section}{\numberline {B}Templates}{17}{appendix.Alph2}%
+\contentsline {subsection}{\numberline {B.1}index.html}{17}{subsection.Alph2.1}%
+\contentsline {subsection}{\numberline {B.2}news.html}{18}{subsection.Alph2.2}%
+\contentsline {subsection}{\numberline {B.3}form.html}{19}{subsection.Alph2.3}%

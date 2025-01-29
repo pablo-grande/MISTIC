@@ -1,0 +1,5 @@
+#!/usr/bin/python3
+from string import ascii_lowercase as letters
+
+print("A" * 70 + '00010203040506070809')
+

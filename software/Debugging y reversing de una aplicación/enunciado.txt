@@ -1,0 +1,19 @@
+En este trabajo, se trata de realizar el reversing de una aplicación (o una parte) compilada en Windows, Linux o Android. A partir del reversing realizado deberéis hacer un informe en el cual como mínimo se incluyan los puntos siguientes:
+
+    ¿Qué habéis deducido o que hace la aplicación a partir del reversing realizado? ¿Cómo habéis llegado a esta conclusión?
+    ¿Usa constantes, literales? ¿Cuáles son y qué uso tienen en la aplicación?
+    ¿Qué bucles hay en la aplicación? ¿Qué hacen? ¿Cuáles son de tipo For, While o Do While? ¿Cómo o qué condicionante hay para salir del bucle? ¿Hay algun bucle anidado?
+    ¿Qué métodos o funciones tiene la aplicación?
+    ¿Habéis  detectado algún punto vulnerable?
+    ¿Utiliza alguna función vulnerable como por ejemplo strcpy, strcmp, a alguna otra?
+    ¿Qué condicionales has encontrado? ¿Qué condición realiza? ¿Qué hace en cada caso?
+    ¿Puedes detectar qué variables utiliza?
+    Muestra el uso de la Pila en algún punto de la ejecución
+    ¿Se puede alterar el flujo del código?
+
+
+Para realizar el reversing podéis elegir entre las diversas herramientas disponibles, como por ejemplo IDA Pro, Immunity, OllyDgb, Ghidra, Android Studio, etc.
+
+Indica la herramienta elegida y todo el proceso detallado que has realizado en el reversing así como los resultados, capturas de pantalla y conclusiones obtenidas.
+
+El trabajo o informe deberá entregarse en formato pdf y debe incluir portada, índice, así como la bibliografía y los enlaces de internet, las fuentes y / o bases de datos y los recursos necesarios que habéis utilizado para obtener la información.
