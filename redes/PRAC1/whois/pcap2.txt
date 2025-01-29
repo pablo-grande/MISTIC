@@ -1,0 +1,46 @@
+% [whois.apnic.net]
+% Whois data copyright terms    http://www.apnic.net/db/dbcopyright.html
+
+% Information related to '61.29.128.0 - 61.29.159.255'
+
+% Abuse contact for '61.29.128.0 - 61.29.159.255' is 'ipas@cnnic.cn'
+
+inetnum:        61.29.128.0 - 61.29.159.255
+netname:        CHINANETCENTER
+descr:          ChinaNetCenter Ltd.
+admin-c:        ZM1723-AP
+tech-c:         ZM1723-AP
+country:        CN
+mnt-by:         MAINT-CNNIC-AP
+mnt-irt:        IRT-CNNIC-CN
+status:         ALLOCATED PORTABLE
+last-modified:  2016-11-01T06:12:03Z
+source:         APNIC
+
+irt:            IRT-CNNIC-CN
+address:        Beijing, China
+e-mail:         ipas@cnnic.cn
+abuse-mailbox:  ipas@cnnic.cn
+admin-c:        IP50-AP
+tech-c:         IP50-AP
+auth:           # Filtered
+remarks:        Please note that CNNIC is not an ISP and is not
+remarks:        empowered to investigate complaints of network abuse.
+remarks:        Please contact the tech-c or admin-c of the network.
+mnt-by:         MAINT-CNNIC-AP
+last-modified:  2017-11-01T08:57:39Z
+source:         APNIC
+
+person:         Zhong Xing
+address:        4G Guomen Building, Sanyuan Bridge Dongsanhuan, Beijing
+country:        CN
+phone:          +86-010-84519900
+e-mail:         zhongx@wangsu.com
+nic-hdl:        ZM1723-AP
+mnt-by:         MAINT-CNNIC-AP
+last-modified:  2018-02-08T03:47:19Z
+source:         APNIC
+
+% This query was served by the APNIC Whois Service version 1.88.15-46 (WHOIS-UK3)
+
+

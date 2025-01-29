@@ -1,0 +1,47 @@
+% [whois.apnic.net]
+% Whois data copyright terms    http://www.apnic.net/db/dbcopyright.html
+
+% Information related to '210.14.128.0 - 210.14.143.255'
+
+% Abuse contact for '210.14.128.0 - 210.14.143.255' is 'ip@cnispgroup.com'
+
+inetnum:        210.14.128.0 - 210.14.143.255
+netname:        SHUJUJIA
+descr:          Beijing ShuJuJia Technology Co., Ltd.
+descr:          Triumph 170 Kai Xuan Cheng, 26th Floor, Block C
+descr:          Bei Yuan Road, Chaoyang District, Beijing City
+country:        CN
+admin-c:        LL1966-AP
+tech-c:         LL1966-AP
+mnt-by:         MAINT-AP-CNISP
+mnt-irt:        IRT-CNISP-CN
+status:         allocated non-portable
+last-modified:  2013-08-09T06:21:50Z
+source:         APNIC
+
+irt:            IRT-CNISP-CN
+address:        Beijing CNISP Technology Co., Ltd
+e-mail:         ip@cnispgroup.com
+abuse-mailbox:  ip@cnispgroup.com
+admin-c:        CM2275-AP
+tech-c:         CM2275-AP
+auth:           # Filtered
+remarks:        ip@cnispgroup.com is invalid
+mnt-by:         MAINT-AP-CNISP
+last-modified:  2019-11-20T13:32:31Z
+source:         APNIC
+
+person:         Lv Le
+nic-hdl:        LL1966-AP
+e-mail:         lv_le@139.com
+address:        No. 20,  Fuxing  Road,  Beijing
+phone:          +86-10-57790119
+fax-no:         +86-10-57790119
+country:        CN
+mnt-by:         MAINT-AP-CNISP
+last-modified:  2016-12-21T06:55:42Z
+source:         APNIC
+
+% This query was served by the APNIC Whois Service version 1.88.15-46 (WHOIS-UK3)
+
+

@@ -1,0 +1,60 @@
+% [whois.apnic.net]
+% Whois data copyright terms    http://www.apnic.net/db/dbcopyright.html
+
+% Information related to '123.64.0.0 - 123.95.255.255'
+
+% Abuse contact for '123.64.0.0 - 123.95.255.255' is 'ipas@cnnic.cn'
+
+inetnum:        123.64.0.0 - 123.95.255.255
+netname:        CTTNET
+descr:          China TieTong Telecommunications Corporation
+descr:          Jinze Mansion, 2 Guangningbo Street,
+descr:          Xicheng District, Beijing, China, 100032
+country:        CN
+admin-c:        WP188-AP
+tech-c:         LM273-AP
+status:         ALLOCATED PORTABLE
+mnt-by:         MAINT-CNNIC-AP
+mnt-lower:      MAINT-CN-CRTC
+mnt-routes:     MAINT-CNNIC-AP
+mnt-irt:        IRT-CNNIC-CN
+last-modified:  2013-01-22T17:52:10Z
+source:         APNIC
+
+irt:            IRT-CNNIC-CN
+address:        Beijing, China
+e-mail:         ipas@cnnic.cn
+abuse-mailbox:  ipas@cnnic.cn
+admin-c:        IP50-AP
+tech-c:         IP50-AP
+auth:           # Filtered
+remarks:        Please note that CNNIC is not an ISP and is not
+remarks:        empowered to investigate complaints of network abuse.
+remarks:        Please contact the tech-c or admin-c of the network.
+mnt-by:         MAINT-CNNIC-AP
+last-modified:  2017-11-01T08:57:39Z
+source:         APNIC
+
+person:         liu min
+address:        Jinze Mansion, 2 Guangningbo Street, Xicheng District, Beijing
+country:        CN
+phone:          +86-13810874779
+e-mail:         gyzhao@cmtietong.com
+nic-hdl:        LM273-AP
+mnt-by:         MAINT-CNNIC-AP
+last-modified:  2018-07-20T00:58:02Z
+source:         APNIC
+
+person:         Wang Pei
+address:        Jinze Mansion, 2 Guangningbo Street, Xicheng District, Beijing
+country:        CN
+phone:          +86-13601002911
+e-mail:         wpli@cmtietong.com
+nic-hdl:        WP188-AP
+mnt-by:         MAINT-CNNIC-AP
+last-modified:  2018-07-20T01:00:03Z
+source:         APNIC
+
+% This query was served by the APNIC Whois Service version 1.88.15-46 (WHOIS-UK3)
+
+

@@ -1,0 +1,30 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{enumitem}
+\usepackage{hyperref} 
+\usepackage{listings}
+\author{Pablo Riutort Grande}
+\title{Seguridad en redes\\ \vspace{1cm}\textbf{PEC 1}}
+\begin{document}
+\maketitle
+\vspace{3cm}
+\section{}
+\begin{itemize}
+\item \textbf{M1} Está destinada a la comunicación mediante SSH entre las máquinas clientes de la red 2 e internet. Podemos ver este comportamiento en las reglas A.03, A.04, B.02 y B.03. En las reglas de la red 1, se permite cualquier origen de dirección y puerto al puerto 22 (típicamente asignado al protocolo SSH) de la M1 y viceversa de la interfaz atm0, haciendo así accesible el equipo M1 desde internet mediante SSH. Por otra parte, en la red 2 tenemos las reglas B.02 y B.03 donde se permite acceder a cualquier equipo de la red a través del puerto 22 si el origen es M1 y la interfaz es eth0 y, de manera inversa, se permite cualquier tráfico que vaya dirigido a la M1 a través de la interfaz eth1 y el puerto de origen sea el 22.
+\item \textbf{M2} Permite el tráfico HTTP entre la red 1 a internet y de la red 1 a la red 2. Podemos ver este comportamiento en las reglas A.05 y A.06 donde la primera permite todo el tráfico de puertos mayores a 1023 a la M2 por el puerto 80 por la interfaz atm0, es decir, admite tráfico de tipo HTTP desde internet y, por otra parte, la regla A.06 permite todo tráfico de origen M2 con puerto 80 a toda la red 1 siendo el equipo de entrada y salida de la red 1 a internet (servidor web).
+\item \textbf{M3} Permite la entrada y salida de tráfico del equipo M3 para hacrer de pasarela HTTP a cualquier servidor de internet. Podemos verlo en las reglas A.07 y A.08. A su vez, las reglas B.04 y B.05 de la red 2 permiten el tráfico de cualquier equipo de la red a M3 a través del puerto 80. De esta forma, las reglas permiten la salida y posterior entrada de tráfico a internet y viceversa siendo este equipo un punto de conexión entre la red 2 e internet mediante HTTP.
+\item \textbf{M4} Se trata de un servidor DNS. Podemos ver este comportamiento en las reglas A.09 y A.10, donde se admite el tráfico de tipo UDP (puerto 53) que va desde M4 a la red y donde se admite cualquier IP y puerto origen de internet a M4 con destino puerto 53; esta configuración suele ser típica de los servidores DNS.\\
+Además, las reglas A.11 y A.12 permiten las peticiones del servidor DNS M4 a servidores DNS de internet y recibir respuesta.
+\item \textbf{M5} Se trata de un servidor DNS interno para la red 2. Se permite el tráfico UDP entre el servidor DNS de la red perimetral y M5. Se hace de igual manera que pasaba con M4, pero en este caso todo el tráfico pasa por el servidor intermedio de M4, que a su vez permite el tráfico desde internet hacia la red 1. Se puede ver reflejado en las reglas B.06 a B.11 que son similares a las de M4 exceptuando que solo se admite como origen o destino las IPs de M4 y M5.
+\end{itemize}
+
+\section{}
+Las reglas A.01 y A.02 bloquean cualquier tráfico con dirección a las redes internas desde la interfaz atm0, es decir,  cualquier tráfico dirigido a las redes 1 y 2 desde internet. B.01 hace lo mismo, pero concretamente desde la interfaz que conecta con la red perimetral, eth0, que es la que da acceso a internet. El tráfico sólo puede venir desde equipos colindantes o mediante las reglas posteriormente especificadas.\\
+En la organización de reglas de filtrado, el orden en el que se miran las reglas es muy importante ya que, en caso de contradicción, la primera regla es la que se ejecutará. En nuestro caso y, dada la naturaleza de las primeras reglas, la prioridad será rechazar todo tipo de tráfico que venga de internet y en la red 2 desde la perimetral. De esta forma se crea un entorno aislado para la red 2 (usuarios) y una red perimetral con equipos bastión que hacen de intermediaros entre los usuarios e internet mediante las reglas de filtrado.
+\section{}
+Tal y como se ha explicado en el apartado 1, la M1 es una máquina que se utiliza para la comunicación SSH entre los clientes e internet. Las reglas A.03 y A.04 permiten el tráfico SSH entre internet y M1 y las reglas B.02 y B.03 permiten el tráfico SSH entre la red 2 y la M1, creando así un nexo común entre internet y la red 2 haciendo accesibles los equipos de la red 2 desde internet a través de SSH.
+\end{document}

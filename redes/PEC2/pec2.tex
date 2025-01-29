@@ -1,0 +1,53 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{enumitem}
+\usepackage{hyperref} 
+\usepackage{listings}
+\usepackage{amsmath}
+\author{Pablo Riutort Grande}
+\title{Seguridad en redes\\ \vspace{1cm}\textbf{PEC 2}}
+\begin{document}
+\maketitle
+\vspace{3cm}
+\section{}
+\begin{itemize}
+\item La memoria del MIFARE Classic 1k se organiza en 16 sectores de 4 bloques de 16 bytes:
+\begin{itemize}
+\item 3 bloques de datos que pueden ser de 2 tipos
+\begin{itemize}
+\item \textit{\textbf{read/write}}: para uso general de almacenamiento de datos.
+\item \textit{\textbf{value block}}: uso de aplicaciones electrónicas, tiene una estructura de memoria que permite detección de errores. Su valor representa un entero de 32 bits que puede ser modificado.
+\end{itemize}
+\item 1 bloque de claves (sector trailer). Este bloque contiene las dos claves autenticación (A y B) de acceso para el sector en particular y las condiciones de acceso al mismo.
+\end{itemize}
+El primer bloque del sector 0 contiene la UID y otra información del fabricante y es de solo lectura.
+\item Cada sector tiene 2 claves de cifrado diferentes: A y B (opcional). Cada una de estas claves puede ser configurada para permitir lectura o escritura del mismo sector mediante los access bits. Si se conoce alguna de las claves y se tienen los permisos adecuados entonces se pueden efectuar acciones sobre el bloque (lectura, escritura, decrementar o incrementar). Las claves tienen una configuración predeterminada:
+\begin{itemize}
+\item La clave A no puede ser leída pero puede ser modificada. También puede modificar la clave B, los bits de acceso y los bloques de datos
+\item La clave B es legible por defecto y se utiliza para datos de usuario de ámbito genérico.
+\end{itemize}
+\item Las condiciones de acceso para cada bloque de datos y bloque de claves se definen con 3 bits. Estos controlan los permisos de acceso a memoria utilizando las claves A y B. Por cada acceso a memoria, la lógica intera verifica estos bits y, en caso de violación, puede bloquear el sector. También determinan qué clave puede ser leída del bloque de claves.
+\item El UID es el identificador único que se da al dispositivo por parte del fabricante. El identificador se escribe en la ROM de la etiqueta para que no se pueda cambiar y se puede obtener sin ningún tipo de técnica criptográfica, lo cual permite al lector describrir la identidad de la etiqueta rápidamente y de manera unívoca.
+\item Al igual que en otras aplicaciones, se podría guardar la información necesaria en un sector de la propia tarjeta y acceder a ella mediante una clave. \\
+Esta información contiene un identificador distinto al UID que puede ser leído mediante la clave del sector y utilzarse como identificador. El nuevo identificador podría ser creado mediante un hash del propio UID y con la información de la clave A, de tal forma que no puede ser deducida fácilmente ya que la clave A no puede ser leída.
+\end{itemize}
+\section{}
+\begin{itemize}
+\item Existen una serie de listados de claves que MIFARE Classic utiliza en muchos de sus dispositivos. Con estas claves se puede efectuar un ataque de fuerza bruta para intentar descubrir las claves y así tener acceso al dispositivo.
+
+\item Este ataque se basa en la debilidad del LSFR para generar un número pseudoaleatorio (nonce) y, por tanto, su fácil predicción. \\
+Consiste en autenticarse en un bloque con una clave ya conocida e intentar computar el valor producido por el LSFR para producir el número aleatorio. En la primera autenticación el LSFR manda un nonce en texto plano. Luego, el atacante intenta autenticarse en el mismo bloque y lee el nonce (esta vez encriptado) por el LSFR. El ataque consiste en calcular la "distancia" entre ambos nonces para poder predecir el siguiente. Si se sabe el siguiente nonce a producir un atacante podría autenticarse en otro bloque.
+
+\item En el proceso de autenticación, el lector envía un criptograma de 8 bytes \{nR\} y \{aR\} y la tarjeta responde con $suc^{3}(n_{T}) \oplus k3$. \\
+Durante esta transacción, la tarjeta comprueba los bits de paridad, si alguno de estos bits no es correcto la tarjeta no responderá, pero si lo son y {aR} es incorrecto, entonces la tarjeta responde con un código de error de 4 bits. Estos 4 bits son el NACK (0x5) que irán encriptados con los primeros 4 bits que corresponden a la clave ks3. Si el atacante combina con XOR el código de error conocido y en texto plano, entonces obtendrá los 4 bits correspondientes a la clave.
+
+\item El diagrama presenta los pasos a seguir para acceder a un dispositivo MIFARE Classic.\\
+En el primer paso, si se tienen todas las claves de los sectores, tal vez porque se hayan publicado todas en internet, tendremos acceso.\\
+Si este no fuera el caso, entonces si tenemos al menos una clave, podemos intentar efectuar el ataque \textit{Nested}. En caso contrario, si nos faltase una clave, podemos intentar descrubir alguna con el ataque \textit{Darkside}. Si descubrimos alguna, entonces ya estamos es disposición de hacer el ataque \textit{Nested} y llegar al objetivo.
+\end{itemize}
+
+\end{document}

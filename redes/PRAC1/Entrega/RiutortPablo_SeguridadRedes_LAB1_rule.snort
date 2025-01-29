@@ -1,0 +1,1 @@
+alert tcp 10.0.0.1 any -> any any (msg:"MISTIC malware trojan detected";sid:124444;rev:1;priority:4;classtype:trojan-activity;flow:to_server,established;content:"User-Agent";http_header;pcre:"/^User-Agent\s*:[^\n]*malw4r3/";)

@@ -1,0 +1,50 @@
+% [whois.apnic.net]
+% Whois data copyright terms    http://www.apnic.net/db/dbcopyright.html
+
+% Information related to '58.14.0.0 - 58.15.255.255'
+
+% Abuse contact for '58.14.0.0 - 58.15.255.255' is 'ipas@cnnic.cn'
+
+inetnum:        58.14.0.0 - 58.15.255.255
+netname:        JNGDNET
+country:        CN
+descr:          Jinan Radio &TV Wellunited
+descr:          Digital Cable TV Co., Ltd
+descr:          3F Sanjianyinyuan Building,No.22 minsheng Road,
+descr:          Jinan, Shandong, P.R.China
+admin-c:        JX211-AP
+tech-c:         JX211-AP
+status:         ALLOCATED PORTABLE
+mnt-by:         MAINT-CNNIC-AP
+mnt-irt:        IRT-CNNIC-CN
+last-modified:  2015-12-01T22:33:03Z
+source:         APNIC
+
+irt:            IRT-CNNIC-CN
+address:        Beijing, China
+e-mail:         ipas@cnnic.cn
+abuse-mailbox:  ipas@cnnic.cn
+admin-c:        IP50-AP
+tech-c:         IP50-AP
+auth:           # Filtered
+remarks:        Please note that CNNIC is not an ISP and is not
+remarks:        empowered to investigate complaints of network abuse.
+remarks:        Please contact the tech-c or admin-c of the network.
+mnt-by:         MAINT-CNNIC-AP
+last-modified:  2017-11-01T08:57:39Z
+source:         APNIC
+
+person:         Jian Xing
+nic-hdl:        JX211-AP
+e-mail:         xj@jnnc.com
+address:        3F Sanjianyinyuan Building,No.22 minsheng Road, Jinan, China
+phone:          +86-531-3198850
+fax-no:         +86-531-3198817
+country:        CN
+mnt-by:         MAINT-CNNIC-AP
+last-modified:  2008-09-04T07:29:50Z
+source:         APNIC
+
+% This query was served by the APNIC Whois Service version 1.88.15-46 (WHOIS-UK3)
+
+
