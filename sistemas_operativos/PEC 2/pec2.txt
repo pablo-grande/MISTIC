@@ -1,0 +1,128 @@
+a. nmap
+root@debian:~# nmap -sV localhost
+Starting Nmap 7.70 ( https://nmap.org ) at 2020-04-05 22:23 CEST
+Nmap scan report for localhost (127.0.0.1)
+Host is up (0.000012s latency).
+Other addresses for localhost (not scanned): ::1
+Not shown: 995 closed ports
+PORT    STATE SERVICE  VERSION
+21/tcp  open  ftp      vsftpd 3.0.3
+22/tcp  open  ssh      OpenSSH 7.9p1 Debian 10+deb10u2 (protocol 2.0)
+80/tcp  open  http     nginx 1.14.2
+443/tcp open  ssl/http nginx 1.14.2
+631/tcp open  ipp      CUPS 2.2
+Service Info: OSs: Unix, Linux; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 14.17 seconds
+
+netstat
+root@debian:~# netstat --listening
+Active Internet connections (only servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State      
+tcp        0      0 0.0.0.0:http            0.0.0.0:*               LISTEN     
+tcp        0      0 0.0.0.0:ssh             0.0.0.0:*               LISTEN     
+tcp        0      0 localhost:ipp           0.0.0.0:*               LISTEN     
+tcp        0      0 0.0.0.0:https           0.0.0.0:*               LISTEN     
+tcp6       0      0 [::]:http               [::]:*                  LISTEN     
+tcp6       0      0 [::]:ftp                [::]:*                  LISTEN     
+tcp6       0      0 [::]:ssh                [::]:*                  LISTEN     
+tcp6       0      0 localhost:ipp           [::]:*                  LISTEN     
+tcp6       0      0 [::]:https              [::]:*                  LISTEN     
+udp        0      0 0.0.0.0:ipp             0.0.0.0:*                          
+udp        0      0 0.0.0.0:mdns            0.0.0.0:*                          
+udp        0      0 0.0.0.0:46806           0.0.0.0:*                          
+udp        0      0 0.0.0.0:bootpc          0.0.0.0:*                          
+udp6       0      0 [::]:mdns               [::]:*                             
+udp6       0      0 [::]:47332              [::]:*                             
+raw6       0      0 [::]:ipv6-icmp          [::]:*                  7          
+Active UNIX domain sockets (only servers)
+Proto RefCnt Flags       Type       State         I-Node   Path
+unix  2      [ ACC ]     STREAM     LISTENING     19784    /tmp/.ICE-unix/721
+unix  2      [ ACC ]     STREAM     LISTENING     10499    /run/systemd/journal/stdout
+unix  2      [ ACC ]     STREAM     LISTENING     17770    /tmp/.X11-unix/X0
+unix  2      [ ACC ]     STREAM     LISTENING     19628    /tmp/ssh-kx6ERuyTOjOS/agent.680
+unix  2      [ ACC ]     STREAM     LISTENING     17769    @/tmp/.X11-unix/X0
+unix  2      [ ACC ]     SEQPACKET  LISTENING     10786    /run/udev/control
+unix  2      [ ACC ]     STREAM     LISTENING     19783    @/tmp/.ICE-unix/721
+unix  2      [ ACC ]     STREAM     LISTENING     17485    /run/NetworkManager/private-dhcp
+unix  2      [ ACC ]     STREAM     LISTENING     14216    /var/run/dbus/system_bus_socket
+unix  2      [ ACC ]     STREAM     LISTENING     14221    /run/cups/cups.sock
+unix  2      [ ACC ]     STREAM     LISTENING     14225    /run/avahi-daemon/socket
+unix  2      [ ACC ]     STREAM     LISTENING     19727    @/tmp/dbus-cLiJoZjMM2
+unix  2      [ ACC ]     STREAM     LISTENING     19429    /run/user/0/systemd/private
+unix  2      [ ACC ]     STREAM     LISTENING     19436    /run/user/0/gnupg/S.gpg-agent.browser
+unix  2      [ ACC ]     STREAM     LISTENING     19439    /run/user/0/gnupg/S.dirmngr
+unix  2      [ ACC ]     STREAM     LISTENING     10479    /run/systemd/private
+unix  2      [ ACC ]     STREAM     LISTENING     19441    /run/user/0/gnupg/S.gpg-agent.ssh
+unix  2      [ ACC ]     STREAM     LISTENING     19443    /run/user/0/gnupg/S.gpg-agent.extra
+unix  2      [ ACC ]     STREAM     LISTENING     19445    /run/user/0/gnupg/S.gpg-agent
+unix  2      [ ACC ]     STREAM     LISTENING     19447    /run/user/0/bus
+unix  2      [ ACC ]     STREAM     LISTENING     10488    /run/systemd/fsck.progress
+
+
+b.
+root@debian:~# systemctl stop vsftpd
+root@debian:~# systemctl disable vsftpd
+Synchronizing state of vsftpd.service with SysV service script with /lib/systemd/systemd-sysv-install.
+Executing: /lib/systemd/systemd-sysv-install disable vsftpd
+Removed /etc/systemd/system/multi-user.target.wants/vsftpd.service.
+root@debian:~# systemctl stop cups
+root@debian:~# systemctl disable cups
+Synchronizing state of cups.service with SysV service script with /lib/systemd/systemd-sysv-install.
+Executing: /lib/systemd/systemd-sysv-install disable cups
+Removed /etc/systemd/system/printer.target.wants/cups.service.
+Removed /etc/systemd/system/multi-user.target.wants/cups.path.
+Removed /etc/systemd/system/sockets.target.wants/cups.socket.
+root@debian:~# systemctl stop cups-browsed
+root@debian:~# systemctl disable cups-browsed
+Synchronizing state of cups-browsed.service with SysV service script with /lib/systemd/systemd-sysv-install.
+Executing: /lib/systemd/systemd-sysv-install disable cups-browsed
+Removed /etc/systemd/system/multi-user.target.wants/cups-browsed.service.
+
+root@debian:~# systemctl status vsftpd
+● vsftpd.service - vsftpd FTP server
+   Loaded: loaded (/lib/systemd/system/vsftpd.service; disabled; vendor preset
+   Active: inactive (dead)
+
+Apr 07 00:08:53 debian systemd[1]: Starting vsftpd FTP server...
+Apr 07 00:08:53 debian systemd[1]: Started vsftpd FTP server.
+Apr 07 00:58:43 debian systemd[1]: Stopping vsftpd FTP server...
+Apr 07 00:58:43 debian systemd[1]: vsftpd.service: Main process exited, code=k
+Apr 07 00:58:43 debian systemd[1]: vsftpd.service: Succeeded.
+Apr 07 00:58:43 debian systemd[1]: Stopped vsftpd FTP server.
+
+Reboot...
+root@debian:~# nmap -sV localhost
+Starting Nmap 7.70 ( https://nmap.org ) at 2020-04-07 01:00 CEST
+Nmap scan report for localhost (127.0.0.1)
+Host is up (0.000021s latency).
+Other addresses for localhost (not scanned): ::1
+Not shown: 997 closed ports
+PORT    STATE SERVICE  VERSION
+22/tcp  open  ssh      OpenSSH 7.9p1 Debian 10+deb10u2 (protocol 2.0)
+80/tcp  open  http     nginx 1.14.2
+443/tcp open  ssl/http nginx 1.14.2
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 14.17 seconds
+
+
+c. 
+echo 1 > /proc/sys/net/ipv4/icmp_echo_ignore_all
+echo  "net.ipv4.icmp_echo_ignore_all = 1" >> /etc/sysctl.conf
+sysctl -p
+
+e. 1. Generate secure password with grub-mkpasswd-pbkdf2
+2. Append /etc/grub.d/00_header
+set superusers="root"
+password_pbkdf2 root <generated password>
+EOF
+3. Update grub with update-grub2
+4. Reboot
+
+
+j)
+https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_language_modes?view=powershell-7
+https://devblogs.microsoft.com/powershell/powershell-constrained-language-mode/
