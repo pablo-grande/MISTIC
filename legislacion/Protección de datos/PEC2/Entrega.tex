@@ -1,0 +1,220 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{enumitem}
+\usepackage{hyperref} 
+\author{Pablo Riutort Grande}
+\title{Prueba de Evaluación Continua 2\\ \vspace{1cm}\textbf{PROTECCIÓN DE DATOS DE CARÁCTER PERSONAL}}
+\begin{document}
+\maketitle
+\pagebreak
+\section{CUESTIONES SUPUESTO PRÁCTICO I}
+Después de haber estudiado el RGPD razonadamente a las siguientes cuestiones y los demás documentos contesta:
+\begin{enumerate}
+\item \textbf{Analiza la problemática que plantea el caso.}\\
+Por una parte, tenemos a un organismo público que está haciendo uso de los datos de menores y tratándolos de manera automatizada para determinar si hay que efectuar aglún tipo de intervención en el ámbito familiar de algunos de ellos. Además, dicha decisión se hace posible gracias a la suministración de datos personales como aistencia escolar, pagos de alquiler, etc.\\
+Por otro lado, tenemos los derechos del menor y el de los padres de un menor el cuál, como fruto del tratamiento de esos datos, pueda ser perfilado e identificado como posible elemento de intervención por parte de los servicios sociales.\\
+
+La principal problemática que plantea este caso es que entran en conflicto los derechos que tienen los padres sobre los datos del menor frente a los derechos que posee el ayuntamiento como organismo público para utilizar esos datos para una finalidad concreta y de interés público.
+
+\item \textbf{Explica qué medidas generales habría de cumplir el tratamiento que se pretende realizar.}\\
+Siendo el ayundamiento el responsable del tratamiento, este queda sujeto a las obligaciones disponga el Reglamento General de Protección de Datos. Estas obligaciones consisten en aplicar una serie de medidas técnicas y organizativas apropiadas para garantizar un nivel de seguridad adecuado. \cite[Sec 2. art 32.]{RGPD}
+\begin{enumerate}[label=(\alph*)]
+\item la seudonimización y el cifrado de datos personales;
+\item  la capacidad de garantizar la confidencialidad, integridad, disponibilidad y resiliencia permanentes de los sistemas y servicios de tratamiento;
+\item  la capacidad de restaurar la disponibilidad y el acceso a los datos personales de forma rápida en caso de incidente físico o técnico;
+\item  un proceso de verificación, evaluación y valoración regulares de la eficacia de las medidas técnicas y organizativas para garantizar la seguridad del tratamiento. 
+\end{enumerate}
+
+\item \textbf{Antes de empezar a tratar datos, el Ayuntamiento deberá adoptar una serie de medidas de cumplimiento normativo aplicables a este tipo de tratamientos. Enuméralas y explica en qué consisten.}\\
+Existen 6 principios básicos que la RGPD \cite[art. 5]{RGPD}: 
+\begin{enumerate}[label=(\alph*)]
+\item \textit{Principio de licitud, lealtad y transparencia}: Los datos del interesado deben ser tratados de estas forma (con licitud, lealtad y transparencia).
+\item \textit{Principio de limitación de la finalidad}: Los datos serán recogidos con un único fin y no serán tratados posteriormente con un fin incompatible.
+\item \textit{Principio de minimización de datos}: Limita el uso de los datos a aquellos que sean los adecuados para cumplir el fin por el que fueron recodigos.
+\item \textit{Principio de exactitud}: establece que los datos personales deben ser exactos y, si fuera necesario, actualizados en función de los fines por los que fueron recogidos.
+\item \textit{Principio de limitación del plazo de conservación}: Limita el uso de los datos cesando su tratamiento cuando estos dejan de ser necesarios para el fin por el que fueron recodigos
+\item \textit{Principio de integridad y confidencialidad}: garantiza una seguridad adecuada, integridad y confidencialidad de los datos personales 
+\end{enumerate}
+
+\item \textbf{¿Cuál sería la base legal del tratamiento en este caso? Razona la respuesta.}
+En este caso, el ayuntamiento se puede ver amparado por las siguientes condiciones del artículo 6 de la RGPD \cite[art 6.]{RGPD}
+\begin{enumerate}[label=(\alph*)]
+\item el tratamiento es necesario para el cumplimiento de una obligación legal aplicable al responsable del tratamiento.
+\item el tratamiento es necesario para proteger intereses vitales del interesado o de otra persona física.
+\item el tratamiento es necesario para el cumplimiento de una misión realizada en interés público o en el ejercicio den poderes públicos conferidos al responsable del tratamiento.
+\end{enumerate}
+Siendo en este caso la finalidad de investigar situaciones de abuso infantil y vulnerabilidad en menores, el ayuntamiento tiene una obligación de cumplimiento legal, la de proteger intereses vitales de los menores y además se trata de una misión realizada en interés público.
+
+\item \textbf{¿Qué medidas tendría que adoptar el Ayuntamiento respecto a la empresa que desarrollará el algoritmo?}\\
+En primer lugar se hará un análisis de riesgos para determinar las medidas a aplicar a estos teniendo en cuenta los tipos de tratamientos, la naturaleza de los datos y número de afectados. Luego, se procederá a la creación de un registro de actividades de tratamiento donde se describan estas actividades y las medidas de seguridad aplicadas y que deberá incluir:
+\begin{itemize}
+\item Contacto del responsable del tratamiento
+\item Finalidad del tratamiento
+\item Descripción de categorías de los datos, de los interesados y, en especial, de los destinatarios
+\item Si ocurre una Transferencia Internacional de Datos (TID) obtener la identificación del país u organización y si procede la documentación de garantías adecuadas.
+\item Plazos para la supresión de datos
+\item Descripción de las medidas técnicas y de seguridad.
+\end{itemize}
+Puesto que este tratamiento entraña un alto riesgo para los derechos y las libertades del menor, será necesario elaborar una evaluación del impacto, que consiste en:
+\begin{itemize}
+\item Descripción detallada de las operaciones y fines del tratamiento
+\item Evaluación de la necesidad y proporcionalidad de estas operaciones respecto a la finalidad del tratamiento.
+\item Evaluación de los riesgos para los interesados
+\item Medidas previstas para afrontar los riesgos
+\end{itemize}
+Por último, si la empresa que realiza el tratamiento no se encuentra dentro del Espacio Económico Europeo y, en cuyo caso, se efectúa una TID, se deberán dar uno de los siguientes requisitos:
+\begin{itemize}
+\item Existir una decisión de adecuación
+\item Ofrecerse las garantías adecuadas
+\item Obtener una autorización específica de la AEPD
+\end{itemize}
+
+\item \textbf{¿Qué garantías deberá ofrecer el algoritmo?}\\
+El algoritmo deberá garantizar la seudominización y la minimización de datos para cumplir su cometido así como integrar las garantás necesarias para su tratamiento. \cite[art 21]{RGPD}. Estas garantías deberán ser cumplidas bajo supervisión del responsable del tratamiento para cumplir de forma efectiva los principios de protección de datos.
+\item \textbf{Supongamos que los padres de algunos de los menores se oponen al tratamiento:}
+\begin{enumerate}
+\item \textbf{¿Cómo debería actuar el ayuntamiento?}\\
+Los padres podrían argumentar que tienen derecho a oponerse al tratamiento de, en este caso, los datos personales del menor del cual tienen su tutela \cite[art 16]{RGPD}, a limitar el tratamiento de estos datos argumentando que el tratamiento es ilícito \cite[art 18]{RGPD} y a no ser objeto de decisiones individuales automatizadas \cite[art 22]{RGPD}.
+\item \textbf{¿Estaría obligado el ayuntamiento a hacer efectivo el derecho de oposición en todas las circunstancias? Razona la respuesta.}\\
+Existen argumentos a favor del ayuntamiento puesto que existen limitaciones a los derechos anteriormente mencionados en la RGPD. En este caso se podrían limitar los derechos anteriormente argumentados para:
+\begin{itemize}
+\item salvaguardar la vida del menor.
+\item investigar una causa penal.
+\item cumplir un objetivo de interés público y social.
+\item proteger al menor.
+\item se podría argumentar que se acreditan motivos sobre el que prevalencen los derechos del interesado (en este caso, el menor).
+\end{itemize}
+
+\end{enumerate}
+
+\item \textbf{El algoritmo ha clasificado a un menor concreto en situación de riesgo de abuso infantil. Los progenitores del menor no están conformes con el resultado de la clasificación y han pedido al ayuntamiento una explicación y una evaluación en profundidad de su caso. Sin embargo, el ayuntamiento se niega a dar una explicación alegando que el algoritmo únicamente predice la mayor probabilidad de padecer abusos por parte del menor y no que realmente vaya a padecerlos.}
+\begin{enumerate}
+ 
+\item \textbf{¿Podría el ayuntamiento tener problemas por no acceder a la petición de los padres si éstos reclamaran ante la Agencia Española de Protección de Datos?}\\
+Sí, en este caso, los padres podrían argumentar que este tratamiento de los datos va en contra del principio de licitud, lealtad y transparencia: El ayuntamiento no está dando explicaciones del uso que se le está dando a los datos del menor (cómo funciona el algoritmo) y, por tanto, no estńa siendo transparentes. Los progenitores tienen derecho a \cite[art 22 apartado 1]{RGPD}:
+\begin{itemize}
+\item que les ofrezcan información específica; en este caso, cómo han sido tratados los datos del menor
+\item recibir una explicación de la decisión tomada después de la evaluación y a impugnar la
+decisión.
+\end{itemize}
+\item \textbf{¿Crees que la AEPD podría considerar que se ha vulnerado algún derecho? Razona la respuesta.}\\
+Creo que si el ayuntamiento no accede a las peticiones los padres podría tener problemas con la AEFPD por las razones anteriormente argumentadas. Además, creo que se podría argumentar que los datos del menor pueden no estar suficientemente anonimizados yendo en contra de la finalidad de este proceso: \textit{"eliminar o reducir al mínimo los riesgos de reidentificación de los datos anonimizados``} \cite{guia} dado que los datos que ofrece el ayuntamiento son muy específicos podría suceder que se pueda deducir a qué familia pertenece y, por ende, a qué menor pertenecen estos datos afectando entonces a su privacidad.\\
+Finalmente, en el caso de que la empresa fuese una empresa externa de un país el cual no ofrece un tratamiento adecuado de protección de datos personales y no se haya obtenido una autorización explícita de la AEPD de esta transferencia, la AEPD podría concluir que se ha vulnerado la RGPD \cite[art 42]{RGPD}.
+\end{enumerate}
+
+\end{enumerate}
+\section{CUESTIONES SUPUESTO PRÁCTICO II}
+\begin{enumerate}
+\item \textbf{Analiza los hechos del caso y el incidente de seguridad en base a las informaciones aportadas y otras que consideres relevantes.}\\
+El IESE Business School, la escuela de negocios de la Universidad de Navarra, y su distribuidor de material docente, IESE Publishing, el mayor proveedor de casos de negocio en español del mundo, sufrió un ciberataque el día 16 de septiembre de 2018.\\
+El ataque, perpetrado por el grupo de hackers LaNueve, expuso, según ellos, un total de 41.782.180 correos y 301.148 datos personales. LaNueve afirmó haber raconseguido acceso a los servidores de IESE Publishing debido a que estos estaban mal provistos de soporte software, en concreto, utilizaba versiones no mantenidas de software de Microsoft, Windows XP, y una versión antigua y vulnerable del \textit{framework} de la misma compañía, ASP.NET.\\
+El grave incidente permitió el acceso no autorizado a los datos de distintos usuarios y, además, adquirir productos de IESE Publshing a través de cuentas ajenas.\\
+
+La IESE está sujeta a la RGPD y puede que fuera sancionado por la AEPD si se efectuara una investigación por esta, aunque a día de hoy no he encontrado nada relacionado con esta supuesta investigación.
+
+\item \textbf{Explica cómo debería proceder IESE ante este incidente de seguridad y
+describe los pasos que debería de tomar para cumplir con el RGPD.}\\
+Según el RGPD, cuando se produzca una violación de seguridad y esta violación suponga un riesgo para las personas físicas, el responsable del tratamiento de los datos debe notificar "sin dilación indebida`` o en menos de 72 horas dicha violación \cite[art 33]{RGPD}.\\
+Dicha notificación deberá contener:
+\begin{itemize}
+\item la naturaleza de la violación de seguridad y las categorías de datos y el número de interesados afectados,
+\item los datos del delegado de protección de datos (DPD) si lo hubiera;
+\item descripción de las posibles consecuencias de la violación;
+\item descripción de las medidas adoptadas o propuestas para remediar la violación y mitigar las consecuencias.
+\end{itemize}
+También estará obligado a notificar a los interesados dicha violación a los interesados.
+
+\item \textbf{Como consecuencia del incidente de seguridad la escuela de negocios se arriesga a una sanción económica y al menoscabo de su reputación. Para que no vuelva a pasar, IESE quiere establecer un Plan de Respuesta a Incidentes de Seguridad que resulte efectivo. Imagínate que te ha contratado para que elabores dicho plan.}\\
+Para elaborar un Plan de Respuesta a Incidentes de Seguridad, me basaré en las indicaciones del OWASP y sus consideraciones para las respuestas a incidentes de seguridad \cite{OWASP}.\\
+
+\subsection{Plan de Respuesta a Incidentes de Seguridad}
+\subsubsection{Auditoría}
+La empresa realizará un estudio exhaustivo de los activos que posee, materiales, humanos y de procesos y velará por mejorar la disposición de estos en cuanto a aspectos de seguridad, esto incluye:
+\begin{itemize}
+\item Formación a los empleados
+\item Comprobación activa de vulnerabilidades en tecnologías que posean
+\item Comprobación periódica de la seguridad en sus procesos
+\item Documentación de todo lo anterior
+\end{itemize} 
+
+Además, se hará un inventario de los medios, procesos y personas que velarán por proporcionar una respuesta rápida y eficaz a una posible incidencia. Dicho inventario incluirá el estado de todo su contenido y se procurará mantenerlo listo y a punto para cualquier posible incidencia.
+
+\subsubsection{Equipo de reacción}
+Asignar a los responsables de ejecutar el plan de incidencias. Estos responsables forman el equipo de respuesta a incidentes y su objetivo es la gestión de las incidencias que acontecen en la empresa.\\
+Existen distintos roles en el equipo, cada uno irá en función de las habilidades de los trabajadores y sus capacidades, pero existen roles obligatorios:
+\begin{itemize}
+\item Jefe de equipo: Se encarga de gestionar la dirección de la respuesta. Preferiblemente alguien con experiencia en seguridad o con suficiente conocmiento de los sistemas de la empresa.
+\item Encargado de la documentación: Su función consiste en documentar los sucesos antes, durante y después de la reacción del equipo. Esta documentación se usará para la elaboración de informes internos y externos en relación a la respuesta de la empresa.
+\item Asesor legal: Se encargará de determinar los aspectos legales relacionados en la incidencia y velará porque no se infringen otros aspectos o leyes en la tarea del equipo de respuesta.
+\end{itemize}
+\subsection{Investigación}
+Consiste en determinar lo que ha ocurrido identificando activos afectados, incluyendo
+\begin{itemize}
+\item Personas: Personal o interesados
+\item Sistemas o procesos comprometidos
+\item Documentación referenciada al incidente logs u otros registros
+\item Testimonios o declaraciones de implicados
+\end{itemize}
+La investigación se llevará a cabo con estos elementos y será tarea del equipo recopilarlos y analizarlos cuidadosamente para valorar el impacto de la incidencia y determinar su alcance en todos los ámbitos de la empresa.\\
+La principal tarea de la investigación es la de catalogar y aislar el o los incidentes acontecidos para la correcta mitigación de estos con toda la información disponible.
+\subsection{Mitigación}
+Después de una exhaustiva investigación se pasa al plan de mitigación, que consiste en subsanar la incidencia. Este plan utilizará todos los recursos disponibles por la empresa para efectuar una planificación y reacción a un ataque concreto.\\
+El equipo de respuesta elaborará un plan detallado que subsane la incidencia y que prevenga otros similares además de hacer hincapié en propuestas de mejoras de procesos. 
+El equipo de respuesta velará que durante la mitigación no se ponga en riesgo ninguno de los activos e interesado de la empresa y velará porque se actúe siempre siendo respetuoso y consciente de las leyes viegentes.
+\subsection{Recuperación}
+Si el plan de mitigación se efectúa correctamente, dará paso a la etapa de recuperación que consiste en recuperar el estado anterior del sistema a antes de ser atacado a excepción de posibles mejoras que se le hayan incluido.\\
+Se considerará recuperado cuando el sistema continúe trabajando como antes de la incidencia y con mecanismos de inmunidad o respuesta a incidencias similares. Estos mecanismos pueden ser hardware o software adquirido para la actualización del propio sistema.
+\subsection{Documentación}
+Durante los procesos anteriores, el encargado de documentación deberá ir recopilando toda la información acontecida en un formato inteligible para el resto de equipos de la empresa y los posibles interesados externos. Dicha doucmentación deberá incluir:
+\begin{itemize}
+\item Este plan de respuesta
+\item Los miembros del equipo
+\item Implicados en el incidente
+\item Los resultados de cada etapa del plan de respuesta
+\item Acciones efectuadas y sus ejecutores
+\item Lecciones aprendidas
+\item Recursos implicados: Utilizados, dañados, perdidos o mejorados en el proceso
+\end{itemize}
+
+\end{enumerate}
+
+\begin{thebibliography}{9}
+
+\bibitem{RGPD}
+  REGLAMENTO (UE) 2016/679 DEL PARLAMENTO EUROPEO Y DEL CONSEJO de 27 de abril de 2016\\
+relativo a la protección de las personas físicas en lo que respecta al tratamiento de datos personales y a la libre circulación de estos datos y por el que se deroga la Directiva 95/46/CE\\
+  \href{https://www.boe.es/doue/2016/119/L00001-00088.pdf}{(Reglamento general de protección de datos)}
+
+\bibitem{guia}
+  Agencia Española de Protección de Datos,
+  \href{https://www.aepd.es/media/guias/guia-orientaciones-procedimientos-anonimizacion.pdf}{\textit{Orientaciones y garantías en los procedimientos de ANONIMIZACIÓN de datos personales}}
+  
+\bibitem{IESE1}
+ Marimar Jiménez.\\
+  Cinco Días - El País\\
+ \href{https://cincodias.elpais.com/cincodias/2018/09/17/companias/1537210351_227985.html}{\textit{El IESE apaga sus sistemas más críticos tras sufrir un ciberataque}}.\\
+ Madrid  17 SEP 2018 - 21:05
+ 
+\bibitem{IESE2}
+  INCIBE\\
+\href{https://www.incibe-cert.es/alerta-temprana/bitacora-ciberseguridad/escuela-negocios-iese-sufre-ciberataque-afecta-datos}{\textit{La escuela de negocios IESE sufre un ciberataque que afecta a datos de clientes}}.\\
+16/09/2018.
+
+\bibitem{IESE3}
+  M. A. Méndez.\\
+  El Confidencial.\\
+  \href{https://www.elconfidencial.com/tecnologia/2018-09-16/anonymous-iese-hackers-hackeos-escuela-de-negocios_1616774/}{\textit{'Hackean' la web de la escuela de negocios IESE y acceden a miles de datos personales}}.\\
+  17/09/2018 17:00
+  
+\bibitem{OWASP}
+  Tom Brennan, ProactiveRISK\\
+  \href{https://www.owasp.org/images/b/bd/IR_Top_10_Considerations_-_Slides-v2.pdf}{Top 10 Considerations For Incident Response.}.\\
+  OWASP.
+
+\end{thebibliography}
+
+\end{document}
